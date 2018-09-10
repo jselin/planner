@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
 
-
 /*
 ('TEX', 'tex (g/1.000m)'), # Mass of yarn in grams per 1000m
 ('DTEX', 'dtex (g/10.000m)'), # Mass of yarn in grams per 10000m
@@ -15,49 +14,74 @@ import './App.css';
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = {value: ''};
+    this.state = {tex: '',
+                  dtex: '',
+                  den: ''};
 
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+    //this.texUpdated = this.texUpdated.bind(this);
   }
 
-  handleChange(event) {
-    this.setState({tex: event.target.value});
+  texUpdated = (event) => {
+    var v = this.texToTex(event.target.value, 1.0);
+
+    this.setState({
+      tex: event.target.value,
+      dtex: this.texToDtex(v),
+      den: this.texToDen(v),
+    });
   }
 
-  handleSubmit(event) {
-    alert('A new name was submitted: ' + this.state.value)
-    event.preventDefault();
+  dtexUpdated = (event) => {
+    var v = this.dtexToTex(event.target.value, 1.0);
+
+    this.setState({
+      tex: this.texToTex(v),
+      dtex: event.target.value,
+      den: this.texToDen(v),
+    });
   }
 
-  // 'DTEX', 'dtex (g/10.000m)'), # Mass of yarn in grams per 10000m
-  dtex() {
-    return this.state.tex/10;
+  denUpdated = (event) => {
+    var v = this.denToTex(event.target.value, 1.0);
+
+    this.setState({
+      tex: this.texToTex(v),
+      dtex: this.texToDtex(v),
+      den: event.target.value,
+    });
   }
 
-  den(){
-    return this.state.tex/9;
-  }
+
+  texToTex(v, n = 1.0) { return (v * n); }
+  dtexToTex(v, n = 1.0) { return (v * n) / 10.0; }
+  denToTex(v, n = 1.0) { return (v * n) / 9.0; }
+  nelToTex(v, n = 1.0) { return 1653.515493 / (v / n); }
+  neToTex(v, n = 1.0) { return 590.5412474 / (v / n); }
+  nekToTex(v, n = 1.0) { return 885.8118712 / (v / n); }
+  nmToTex(v, n = 1.0) { return 1000.0 / (v / n); }
+
+  texToDtex(v) { return v * 10.0; }
+  texToDen(v) { return v * 9.0; }
+  texToNel(v) { return v / 1653.515493; }
+  texToNe(v) { return v / 590.5412474; }
+  texToNek(v) { return v / 885.8118712; }
+  texToNm(v) { return v / 1000.0}
+
 
   render() {
     return (
       <div className="App">
         <header className="App-header">
-          <h1 className="App-title">Welcome to React</h1>
+          <h1 className="App-title">Welcome to Yarn weight calculator</h1>
         </header>
         <p className="App-intro">
-          Just start typing to fileds below
+          Just start typing to fields below
         </p>
         <form onSubmit={this.handleSubmit}>
-          <label>
-            TEX:
-            <input type="text" value={this.state.tex} onChange={this.handleChange} />
-          </label>
+          <label>tex: <input type="text" value={this.state.tex} onChange={this.texUpdated} /><br/></label>
+          <label>dtex: <input type="text" value={this.state.dtex} onChange={this.dtexUpdated} /><br/></label>
+          <label>den: <input type="text" value={this.state.den} onChange={this.denUpdated} /><br/></label>
         </form>
-        <p className="App-results">
-          tex: {this.dtex()} <br/>
-          den: {this.den()}
-        </p>
       </div>
     );
   }
