@@ -83,7 +83,7 @@ class App extends Component {
     return (
       <div className="App">
         <header className="App-header">
-          <h1 className="App-title">Welcome to Yarn weight calculator</h1>
+          <h1 className="App-title">Yarn weight calculator</h1>
         </header>
         <p className="App-intro">
           Just start typing to field below
@@ -117,7 +117,7 @@ class App extends Component {
           <YarnResultBox 
             label="den"
             value={this.state.den}
-            help="Mass of yarn in grams per 9.000 meters"
+            help="Denier: Mass of yarn in grams per 9.000 meters"
             />
           <YarnResultBox 
             label="Nm"
@@ -140,8 +140,10 @@ class App extends Component {
             help="English wool yarn number (worsted): Number of 300 yard strands per mass of 1 English pound"
             />
        </div>
-       <p>
-         <br/>English pound aka Imperial Standard Pound equals to 453.59265 grams
+       <p className="Bottom-legend">
+         <br/>
+         English pound aka Imperial Standard Pound equals to 453.59265 grams<br/>
+         Yard equals to  0.9144 m
        </p>
       </div>
     );
