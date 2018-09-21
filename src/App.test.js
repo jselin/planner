@@ -7,3 +7,7 @@ it('renders without crashing', () => {
   ReactDOM.render(<App />, div);
   ReactDOM.unmountComponentAtNode(div);
 });
+
+it('tex to dtex', () => {
+  expect(texToDtex(1)).toEqual(0.1);
+})
