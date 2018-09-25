@@ -9,5 +9,5 @@ it('renders without crashing', () => {
 });
 
 it('tex to dtex', () => {
-  expect(texToDtex(1)).toEqual(0.1);
+  expect(App.prototype.texToDtex(1)).toBeCloseTo(10);
 })

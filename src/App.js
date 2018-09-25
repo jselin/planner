@@ -162,7 +162,7 @@ class App extends Component {
 
 function YarnResultBox(props) {
   return (
-    <div classname="Yarn-result-box">
+    <div className="Yarn-result-box">
       <div className="Type-help">{props.help}</div>
       <div className="Type-label">{props.label} {props.value}</div><br/>
     </div>
