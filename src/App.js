@@ -1,83 +1,70 @@
 import React, { Component } from 'react';
 import './App.css';
+import { Table } from 'react-bootstrap';
+
+//const yard = 0.9144 //m
+//const pound = 453.59265 //g
+
+const units = {
+  tex: {
+    label: "Tex",
+    unit: "grams / 1,000 meters"
+  },
+  den: {
+    label: "Denier",
+    unit: "grams / 10,000 meters"
+  },
+  dtex: {
+    label: "Decitex",
+    unit: "grams / 9,000 meters"
+  }
+}
 
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = {type: 'tex',
-                  input: '',
-                  tex: '',
-                  dtex: '',
-                  den: '',
-                  nel: '',
-                  ne: '',
-                  nek: '',
-                  nm: '',
-                };
+    this.state = {
+      input: '',
+      input_unit: units.tex.label,
+      tex: 0.0
+    }
   }
 
   handleValueUpdate = (e) => {
-    const v = this.toTex(this.state.type, parseFloat(e.target.value), 1.0);
+    const v = this.toTex(this.state.input_unit, parseFloat(e.target.value), 1.0);
     this.setState({
       input: e.target.value,
-    });
-    this.updateState(v);
+      tex: v
+    })
   }
 
   handleTypeUpdate = (e) => {
     const v = this.toTex(e.target.value, this.state.input);
     this.setState({
-      type: e.target.value,
-    });
-    this.updateState(v);
+      input_unit: e.target.value,
+      tex: v
+    })
   }
 
-  toTex(type, v, n) {
-    switch(type) {
-      case 'tex': return this.texToTex(v, n);
-      case 'dtex': return this.dtexToTex(v, n);
-      case 'den': return this.denToTex(v, n);
-      case 'nel': return this.nelToTex(v, n);
-      case 'ne': return this.neToTex(v, n);
-      case 'nek': return this.nekToTex(v, n);
-      case 'nm': return this.nmToTex(v, n);
-      default: return '';
+  toTex(unit, v) {
+    switch (unit) {
+      case units.tex.label: return v;
+      case units.dtex.label: return v / 10.0;
+      case units.den.label: return v / 9.0;
+      default: return 0;
     }
   }
 
-  updateState(v) {
-    this.setState({
-      tex: this.cleanNumber(this.texToTex(v)),
-      dtex: this.cleanNumber(this.texToDtex(v)),
-      den: this.cleanNumber(this.texToDen(v)),
-      nel: this.cleanNumber(this.texToNel(v)),
-      ne: this.cleanNumber(this.texToNe(v)),
-      nek: this.cleanNumber(this.texToNek(v)),
-      nm: this.cleanNumber(this.texToNm(v)),
-    });
-  }
 
-  cleanNumber(v) {
-    if (Number.isNaN(v) || v === 0 )
-      return '';
-    const rounded = Math.round( v * 100) / 100;
-    return rounded.toString();
-  }
+  fromNel(v) { return 1653.515493 / v; }
+  fromNe(v) { return 590.5412474 / v; }
+  fromNek(v) { return 885.8118712 / v; }
+  fromNm(v) { return 1000.0 / v; }
 
-  texToTex(v, n = 1.0) { return (v * n); }
-  dtexToTex(v, n = 1.0) { return (v * n) / 10.0; }
-  denToTex(v, n = 1.0) { return (v * n) / 9.0; }
-  nelToTex(v, n = 1.0) { return 1653.515493 / (v / n); }
-  neToTex(v, n = 1.0) { return 590.5412474 / (v / n); }
-  nekToTex(v, n = 1.0) { return 885.8118712 / (v / n); }
-  nmToTex(v, n = 1.0) { return 1000.0 / (v / n); }
-
-  texToDtex(v) { return v * 10.0; }
-  texToDen(v) { return v * 9.0; }
-  texToNel(v) { return v / 1653.515493; }
-  texToNe(v) { return v / 590.5412474; }
-  texToNek(v) { return v / 885.8118712; }
-  texToNm(v) { return v / 1000.0}
+  toNel(v) { return v / 1653.515493; }
+  toNe(v) { return v / 590.5412474; }
+  toNek(v) { return v / 885.8118712; }
+  toNm(v) { return v / 1000.0 }
 
   render() {
     return (
@@ -93,80 +80,98 @@ class App extends Component {
             <input name="value" type="text" onChange={(e) => this.handleValueUpdate(e)} />
           </label>
           <select name="type" defaultValue="tex" onChange={(e) => this.handleTypeUpdate(e)} >
-            <option value="tex">tex</option>
-            <option value="dtex">dtex</option>
-            <option value="den">den</option>
-            <option value="nm">Nm</option>
-            <option value="ne">Ne</option>
-            <option value="nel">NeL</option>
-            <option value="nek">NeK</option>
+            <Units/>
           </select>
         </form>
-        <br/>
-        <div className="Yarn-results">
-          <YarnResultBox 
-            label="tex"
-            value={this.state.tex}
-            help="Mass of yarn in grams per 1.000 meters"
-            />
-          <YarnResultBox 
-            label="dtex"
-            value={this.state.dtex}
-            help="Mass of yarn in grams per 10.000 meters"
-            />
-          <YarnResultBox 
-            label="den"
-            value={this.state.den}
-            help="Denier: Mass of yarn in grams per 9.000 meters"
-            />
-          <YarnResultBox 
-            label="Nm"
-            value={this.state.nm}
-            help="Metric yarn number: Lenght of yarn in meters per mass of 1 gram"
-            />
-          <YarnResultBox 
-            label="Ne"
-            value={this.state.ne}
-            help="English cotton yarn number (ECC): Number of 840 yard strands per mass of 1 English pound"
-            />
-          <YarnResultBox 
-            label="NeL"
-            value={this.state.nel}
-            help="English linen yarn number: Number of 300 yard strands per mass of 1 English pound"
-            />
-          <YarnResultBox       
-            label="NeK"
-            value={this.state.nek}
-            help="English wool yarn number (worsted): Number of 300 yard strands per mass of 1 English pound"
-            />
-       </div>
-       <p className="Bottom-legend">
-         <br/>
-         English pound aka Imperial Standard Pound equals to 453.59265 grams<br/>
-         Yard equals to  0.9144 m
+        <br />
+        <Table>
+          <tbody>
+            <tr>
+              <th>Label</th>
+              <th>Value</th>
+              <th>Unit</th>
+            </tr>
+            <Yarns tex={this.state.tex}/>
+          </tbody>
+        </Table>
+        <p className="Bottom-legend">
+          <br />
+          English pound aka Imperial Standard Pound equals to 453.59265 grams<br />
+          Yard equals to  0.9144 m
        </p>
       </div>
     );
   }
 }
 
-/*
-('TEX', 'tex (g/1.000m)'), # Mass of yarn in grams per 1000m
-('DTEX', 'dtex (g/10.000m)'), # Mass of yarn in grams per 10000m
-('DEN', 'den (Denier, g/9.000m)'), # Mass of yarn in grams for leght of 9000,
-('NM', 'Nm (Metric yarn number, m/g)'), # Lengh in meters per 1g of mass
-('NE', 'Ne (English cotton yarn number) aka ECC'), # Number of 840 yard strands per 1 Englih pound of mass
-('NEL', 'NeL (English linen yarn number)'), # Number of 300 yard strands per 1 Englih pound of mass
-('NEK', 'NeK (English wool yarn number, worsted)'), # Number of 300 yard strands per 1 Englih pound of mass
-*/
+function Units(props) {
+  var res = [];
 
-function YarnResultBox(props) {
+  Object.keys(units).forEach((key) => 
+    res.push(
+      <option key={key} value={units[key].label}>{units[key].label}</option>
+    ));
+  
+  return res;
+}
+
+function Yarns(props) {
+  var yarns = [];
+  Object.keys(units).forEach((key) => 
+    yarns.push(
+      <Yarn key={key} unit={units[key].label} tex={props.tex}/>
+    ));
+
+  return yarns;
+}
+
+function Yarn(props) {
+  const yarn = toYarn(props.unit, props.tex);
+
   return (
-    <div className="Yarn-result-box">
-      <div className="Type-help">{props.help}</div>
-      <div className="Type-label">{props.label} {props.value}</div><br/>
-    </div>
-)
+    <tr key={props.unit}>
+      <td>{yarn.label}</td>
+      <td>{yarn.value}</td>
+      <td>{yarn.unit}</td>
+    </tr>
+  )
+}
+
+function toYarn(unit, v) {
+  switch (unit) {
+    case units.tex.label:
+      return {
+        value: cleanNumber(v),
+        label: units.tex.label,
+        unit: units.tex.unit
+      };
+    case units.dtex.label:
+      return {
+        value: cleanNumber(v * 10.0),
+        label: units.dtex.label,
+        unit: units.dtex.unit
+      };
+    case units.den.label:
+      return {
+        value: cleanNumber(v * 9.0),
+        label: units.den.label,
+        unit: units.den.unit
+      };
+    default:
+      return {
+        value: '',
+        label: '',
+        unit: ''
+      };
+  }
+}
+
+function cleanNumber(v) {
+  //console.log(v);
+  if (Number.isNaN(v) || v === 0)
+    return '';
+  const rounded = Math.round(v * 100) / 100;
+  return rounded.toString();
 }
 
 export default App;
