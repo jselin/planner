@@ -5,7 +5,7 @@ import { Table } from 'react-bootstrap';
 //const yard = 0.9144 //m
 //const pound = 453.59265 //g
 
-const units = {
+export const units = {
   tex: {
     label: "Tex",
     unit: "grams / 1,000 meters"
