@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
-import { Table } from 'react-bootstrap';
+import { Table, Form } from 'react-bootstrap';
 
 //const yard = 0.9144 //m
 //const pound = 453.59265 //g
@@ -75,25 +75,27 @@ class App extends Component {
         <p className="App-intro">
           Just start typing to field below
         </p>
-        <form>
+        <Form>
           <label>
             <input name="value" type="text" onChange={(e) => this.handleValueUpdate(e)} />
           </label>
           <select name="type" defaultValue="tex" onChange={(e) => this.handleTypeUpdate(e)} >
-            <Units/>
+            <Units />
           </select>
-        </form>
+        </Form>
         <br />
-        <Table striped bordered hove className="Result-Table">
-          <tbody>
-            <tr>
-              <th>Label</th>
-              <th>Value</th>
-              <th>Unit</th>
-            </tr>
-            <Yarns tex={this.state.tex}/>
-          </tbody>
-        </Table>
+        <div className="Table-container">
+          <Table className="Result-Table" striped bordered hover>
+            <tbody>
+              <tr>
+                <th>Label</th>
+                <th>Value</th>
+                <th>Unit</th>
+              </tr>
+              <Yarns tex={this.state.tex} />
+            </tbody>
+          </Table>
+        </div>
         <p className="Bottom-legend">
           <br />
           English pound aka Imperial Standard Pound equals to 453.59265 grams<br />
@@ -107,19 +109,19 @@ class App extends Component {
 function Units(props) {
   var res = [];
 
-  Object.keys(units).forEach((key) => 
+  Object.keys(units).forEach((key) =>
     res.push(
       <option key={key} value={units[key].label}>{units[key].label}</option>
     ));
-  
+
   return res;
 }
 
 function Yarns(props) {
   var yarns = [];
-  Object.keys(units).forEach((key) => 
+  Object.keys(units).forEach((key) =>
     yarns.push(
-      <Yarn key={key} unit={units[key].label} tex={props.tex}/>
+      <Yarn key={key} unit={units[key].label} tex={props.tex} />
     ));
 
   return yarns;

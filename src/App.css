@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+  width: 100%;
 }
 
 .App-header {
@@ -40,8 +41,10 @@
 
 .Result-Table {
   text-align: left;
-  width: 100%;
-  padding: 30px;
+}
+
+.Table-container {
+  padding: 15px;
 }
 
 th, td {
