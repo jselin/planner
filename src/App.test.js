@@ -13,3 +13,4 @@ it('renders without crashing', () => {
 it('tex', () => { expect(App.prototype.toTex(units.tex.label, 1)).toBeCloseTo(1); })
 it('dtex', () => { expect(App.prototype.toTex(units.dtex.label, 10)).toBeCloseTo(1); })
 it('den', () => { expect(App.prototype.toTex(units.den.label, 9)).toBeCloseTo(1); })
+

@@ -84,7 +84,7 @@ class App extends Component {
           </select>
         </form>
         <br />
-        <Table>
+        <Table striped bordered hove className="Result-Table">
           <tbody>
             <tr>
               <th>Label</th>
