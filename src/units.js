@@ -5,6 +5,21 @@ export const UNIT_TYPE = {
     DEN: "denier",
 }
 
+const factors = [
+    {
+        type: UNIT_TYPE.TEX,
+        factor: 1.0
+    },
+    {
+        type: UNIT_TYPE.DTEX,
+        factor: 10.0
+    },
+    {
+        type: UNIT_TYPE.DEN,
+        factor: 9.0
+    },
+]
+
 /*
 export const UNIT_CONST = {
     YARD_IN_M: 0.9144,
@@ -31,27 +46,15 @@ export const units = [
 ]
 
 export function toTex(unitType, v) {
-    switch (unitType) {
-        case UNIT_TYPE.TEX: return v;
-        case UNIT_TYPE.DTEX: return v / 10.0;
-        case UNIT_TYPE.DEN: return v / 9.0;
-        default: {
-            console.log("toTex: Unknown unit: " + unitType);
-            return NaN;
-        }
-    }
+    return v / factors.find(factor =>
+        factor.type === unitType
+    ).factor;
 }
 
 export function toUnit(unitType, v) {
-    switch (unitType) {
-        case UNIT_TYPE.TEX: return v;
-        case UNIT_TYPE.DTEX: return v * 10.0;
-        case UNIT_TYPE.DEN: return v * 9.0;
-        default: {
-            console.log("toUnit: Unknown unit: " + unitType);
-            return NaN;
-        }
-    }
+    return v * factors.find(factor =>
+        factor.type === unitType
+    ).factor;
 }
 
 export function unitFormatter(unit, v) {
@@ -64,7 +67,6 @@ export function unitFormatter(unit, v) {
 }
 
 export function unitsFormatter(v) {
-    console.log(v);
     return units.map(unit =>
         unitFormatter(unit, v)
     );
