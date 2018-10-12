@@ -16,18 +16,27 @@ class App extends Component {
 
   handleValueUpdate = (e) => {
     const tex = toTex(this.state.inputUnitType, parseFloat(e.target.value), 1.0);
+    console.log("handleValueUpdate");
+    e.preventDefault(); 
+    e.stopPropagation();
     this.setState({
       input: e.target.value,
       tex: tex,
     });
   }
-
+  
   handleTypeUpdate = (e) => {
     const tex = toTex(e.target.value, parseFloat(this.state.input), 1.0);
+    console.log("handleTypeUpdate");
     this.setState({
       inputUnitType: e.target.value,
       tex: tex,
     });
+  }
+
+  handleSubmit = (e) => {
+    e.preventDefault(); 
+    e.stopPropagation();
   }
 
   render() {
@@ -39,7 +48,7 @@ class App extends Component {
         <p className="App-intro">
           Just start typing to field below
         </p>
-        <Form>
+        <Form onSubmit={(e) => this.handleSubmit(e)}>
           <label>
             <input name="value" type="text" onChange={(e) => this.handleValueUpdate(e)} />
           </label>
