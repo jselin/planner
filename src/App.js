@@ -16,7 +16,6 @@ class App extends Component {
 
   handleValueUpdate = (e) => {
     const tex = toTex(this.state.inputUnitType, parseFloat(e.target.value), 1.0);
-    console.log("handleValueUpdate");
     e.preventDefault(); 
     e.stopPropagation();
     this.setState({
@@ -27,7 +26,6 @@ class App extends Component {
   
   handleTypeUpdate = (e) => {
     const tex = toTex(e.target.value, parseFloat(this.state.input), 1.0);
-    console.log("handleTypeUpdate");
     this.setState({
       inputUnitType: e.target.value,
       tex: tex,
@@ -84,7 +82,7 @@ function Yarns(props) {
     <Table className="Result-Table" striped bordered hover>
       <tbody>
         <tr>
-          <th>Label</th>
+          <th>Measure</th>
           <th>Value</th>
           <th>Unit</th>
         </tr>
