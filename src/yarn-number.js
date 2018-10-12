@@ -1,8 +1,8 @@
 
-export function parseYarnNumber(yarnNumber) {
-    return numberWithCommas(parseFloat(val.replace(',', '')).toFixed(2));
-
-
-    return parseFloat(yarnNumber);
+export function parseYarnToFloat(yarnNumber) {
+    return parseFloat(commaToDot(yarnNumber));
 }
 
+function commaToDot(str) {
+    return str.replace(',', '.');
+}

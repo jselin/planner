@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import { Table, Form } from 'react-bootstrap';
 import { UNIT_TYPE, units, unitsFormatter, toTex } from './units.js';
+import {parseYarnToFloat} from './yarn-number'
 
 
 class App extends Component {
@@ -15,7 +16,7 @@ class App extends Component {
   }
 
   handleValueUpdate = (e) => {
-    const tex = toTex(this.state.inputUnitType, parseFloat(e.target.value), 1.0);
+    const tex = toTex(this.state.inputUnitType, parseYarnToFloat(e.target.value), 1.0);
     e.preventDefault(); 
     e.stopPropagation();
     this.setState({
@@ -25,7 +26,7 @@ class App extends Component {
   }
   
   handleTypeUpdate = (e) => {
-    const tex = toTex(e.target.value, parseFloat(this.state.input), 1.0);
+    const tex = toTex(e.target.value, parseYarnToFloat(this.state.input), 1.0);
     this.setState({
       inputUnitType: e.target.value,
       tex: tex,
