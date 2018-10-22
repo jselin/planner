@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import { Table, Form } from 'react-bootstrap';
-import { UNIT_TYPE, units, unitsFormatter, toTex } from './units.js';
+import { UNIT_TYPE, units, unitsFormatter, fromUnitToBase } from './units.js';
 import {numberingToFloat} from './yarn-number'
 
 
@@ -11,25 +11,25 @@ class App extends Component {
     this.state = {
       input: '',
       inputUnitType: UNIT_TYPE.TEX,
-      tex: 0.0
+      base: 0.0
     }
   }
 
   handleValueUpdate = (e) => {
-    const tex = toTex(this.state.inputUnitType, numberingToFloat(e.target.value), 1.0);
+    const base = fromUnitToBase(this.state.inputUnitType, numberingToFloat(e.target.value), 1.0);
     e.preventDefault(); 
     e.stopPropagation();
     this.setState({
       input: e.target.value,
-      tex: tex,
+      base: base,
     });
   }
   
   handleTypeUpdate = (e) => {
-    const tex = toTex(e.target.value, numberingToFloat(this.state.input), 1.0);
+    const base = fromUnitToBase(e.target.value, numberingToFloat(this.state.input), 1.0);
     this.setState({
       inputUnitType: e.target.value,
-      tex: tex,
+      base: base,
     });
   }
 
@@ -60,7 +60,7 @@ class App extends Component {
         </Form>
         <br />
         <div className="Table-container">
-          <Yarns tex={this.state.tex} />
+          <Yarns base={this.state.base} />
         </div>
         <p className="Bottom-legend">
           Copyright Jari Selin
@@ -77,7 +77,7 @@ function UnitOptions(props) {
 }
 
 function Yarns(props) {
-  const yarns = unitsFormatter(props.tex);
+  const yarns = unitsFormatter(props.base);
 
   return (
     <Table className="Result-Table" striped bordered hover>
@@ -85,12 +85,14 @@ function Yarns(props) {
         <tr>
           <th>Measure</th>
           <th>Value</th>
+          <th>Family</th>
           <th>Unit</th>
         </tr>
         {yarns.map(unit => 
           <tr key={unit.type}>
             <td>{unit.label}</td>
             <td>{unit.value}</td>
+            <td>{unit.system}</td>
             <td>{unit.unit}</td>
           </tr>
         )}
