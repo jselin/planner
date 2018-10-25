@@ -66,14 +66,7 @@ class App extends Component {
         <div className="Table-container">
           <Yarns base={this.state.base} />
         </div>
-        <p className="UnitLegend">
-          <pre>
-            Skein: 256 Yards{"\n"}
-            Yard: 0.9144 Meters{"\n"}
-            Pound: 453.59265 Grams{"\n"}
-            Dram: 1.7718451953125 Grams{"\n"}
-          </pre>
-        </p>
+        <UnitLegend/>
         <p className="Bottom-legend">
           Copyright Jari Selin
        </p>
@@ -81,6 +74,32 @@ class App extends Component {
     );
   }
 }
+
+function UnitLegend(props) {
+  return (
+    <p className="UnitLegend">
+      <pre>
+        Pound: 453.59265 grams{"\n"}
+        Ounce: 1/16 pound{"\n"}
+        Dram:  ​1⁄16 ounce{"\n"}
+        Grain: 64.79891 milligrams{"\n"}
+        {"\n"}
+        Yard: 0.9144 meters{"\n"}
+        Inch: 1/36 yard{"\n"}
+        Skein: 256 yards{"\n"}
+        Thread: 54 inches{"\n"}
+        Lea: 120 yards or 80 threads{"\n"}
+        Hank: 7 leas or 840 yards{"\n"}
+        Spindle: 18 hanks or 15.120 yards{"\n"}
+        {"\n"}
+        Cut: 120 threads or 300 yards{"\n"}
+        Slip: 12 cuts or 3600 yards{"\n"}
+        Spyndle: 4 slips or 14,400 yards{"\n"}
+      </pre>
+    </p>
+  );
+}
+
 
 function UnitOptions(props) {
   return (units.map(unit =>
