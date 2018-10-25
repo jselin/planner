@@ -25,6 +25,10 @@
   font-size: large;
 }
 
+.Input-Form {
+  padding: 15px;
+}
+
 .Type-help {
   font-size: small;
   color: #bbbbbb;

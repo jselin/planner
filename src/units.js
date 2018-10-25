@@ -39,7 +39,7 @@ export const units = [
     {
         type: UNIT_TYPE.DTEX,
         label: "Decitex",
-        unit: "decigrams / 1,000 meters (or grams / 10,000 meters)",
+        unit: "decigrams / 1,000 meters",
         massUnit: 1,
         lenghtUnit: 10000,
         direct: true,
@@ -103,7 +103,7 @@ export const units = [
     {
         type: UNIT_TYPE.SILK_COUNT,
         label: "Silk count",
-        unit: "drams / 1.000 yards (or 1/16 ounce / 1.000 yards)",
+        unit: "drams / 1.000 yards",
         massUnit: UNIT_CONST.DRAM_IN_G,
         lenghtUnit: 1000 * UNIT_CONST.YARD_IN_M,
         direct: true,
