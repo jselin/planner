@@ -11,6 +11,7 @@ export const UNIT_TYPE = {
     BASE: "base",
     WOOLLEN_ABERDEEN: "woollen_aberdeen",
     WOOLLEN_GRAIN: "woollen_grain",
+    WOOLLEN_RUN: "woollen_run",
     SPUN_SILK: "spun_silk"
 }
 
@@ -21,6 +22,7 @@ export const UNIT_CONST = {
     OUNCE_IN_G: 28.349523125,
     DRAM_IN_G: 1.7718451953125,
     GRAIN_IN_G: 0.06479891,
+    SKEIN_IN_M: 256 * 0.9144,
 }
 
 // base lenght unit in m
@@ -88,6 +90,14 @@ export const units = [
         unit: "pounds / 14,400 yards",
         massUnit: UNIT_CONST.GRAIN_IN_G,
         lenghtUnit: 20 * UNIT_CONST.YARD_IN_M,
+        direct: true,
+    },
+    {
+        type: UNIT_TYPE.WOOLLEN_RUN,
+        label: "Woollen (Yorkshire)",
+        unit: "pounds / 256 yards (skein)",
+        massUnit: UNIT_CONST.POUND_IN_G,
+        lenghtUnit: UNIT_CONST.SKEIN_IN_M,
         direct: true,
     },
     {
@@ -160,7 +170,7 @@ export function unitFormatter(unit, v) {
     return {
         type: unit.type,
         label: unit.label,
-        system: unit.direct ? "Direct" : "Indirect",
+        system: unit.direct ? "Fixed lenght" : "Fixed weight",
         unit: unit.unit,
         value: cleanNumber(fromBaseToUnit(unit.type, v)),
     };
