@@ -12,7 +12,8 @@ export const UNIT_TYPE = {
     WOOLLEN_ABERDEEN: "woollen_aberdeen",
     WOOLLEN_GRAIN: "woollen_grain",
     WOOLLEN_RUN: "woollen_run",
-    SPUN_SILK: "spun_silk"
+    SPUN_SILK: "spun_silk",
+    GRAINS_PER_YARD: "(gr/yd)",
 }
 
 // by definitions in Wikipedia
@@ -130,6 +131,14 @@ export const units = [
         unit: "gram / meter",
         massUnit: 1,
         lenghtUnit: 1,
+        direct: true,
+    },
+    {
+        type: UNIT_TYPE.GRAINS_PER_YARD,
+        label: "Grains per yard (gr/yd)",
+        unit: "grains / yard",
+        massUnit: UNIT_CONST.GRAIN_IN_G,
+        lenghtUnit: UNIT_CONST.YARD_IN_M,
         direct: true,
     },
 

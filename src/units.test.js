@@ -30,4 +30,8 @@ it('nm', () => {
     expect(toUnit(u, 1000.0)).toBeCloseTo(1.0);
     expect(toTex(u, 1.0)).toBeCloseTo(1000);
 })
+it('grain per yard', () => {
+    const u = UNIT_TYPE.GRAINS_PER_YARD;
+    expect(toTex(u, 1.0)).toBeCloseTo(70.86);
+})
 
