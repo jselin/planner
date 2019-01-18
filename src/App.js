@@ -68,7 +68,7 @@ class App extends Component {
         </div>
         <UnitLegend/>
         <p className="Bottom-legend">
-          Copyright Jari Selin
+          Copyright <a href="mailto:yarnweightcalculator@selinf.fi">Jari Selin</a>
        </p>
       </div>
     );
@@ -116,15 +116,15 @@ function Yarns(props) {
         <tr>
           <th>Numbering system</th>
           <th>Value</th>
-          <th>Type</th>
           <th>Unit</th>
+          <th>Type</th>
         </tr>
         {yarns.map(unit =>
           <tr key={unit.type}>
             <td>{unit.label}</td>
             <td>{unit.value}</td>
-            <td>{unit.system}</td>
             <td>{unit.unit}</td>
+            <td>{unit.system}</td>
           </tr>
         )}
       </tbody>
