@@ -12,7 +12,12 @@ export const UNIT_TYPE = {
     WOOLLEN_ABERDEEN: "woollen_aberdeen",
     WOOLLEN_GRAIN: "woollen_grain",
     WOOLLEN_RUN: "woollen_run",
-    SPUN_SILK: "spun_silk"
+    SPUN_SILK: "spun_silk",
+    GR_YARD: "gr/yard",
+    NE: "ne",
+    NEK: "nek",
+    NEL: "nel",
+    NES: "nes",
 }
 
 // by definitions in Wikipedia
@@ -69,6 +74,46 @@ export const units = [
         direct: true,
     },
     {
+        type: UNIT_TYPE.NM,
+        label: "Metric cotton count (Nm)",
+        unit: "1.000 meters / kilogram",
+        massUnit: 1000,
+        lenghtUnit: 1000,
+        direct: false,
+    },
+    {
+        type: UNIT_TYPE.NE,
+        label: "Ne, NeC or ECC (Number English)",
+        unit: "840 yards / pound",
+        massUnit: 840 * UNIT_CONST.YARD_IN_M,
+        lenghtUnit: UNIT_CONST.POUND_IN_G,
+        direct: false,
+    },
+    {
+        type: UNIT_TYPE.NEL,
+        label: "NeL, Lea (Linen Count)",
+        unit: "300 yards / pound",
+        massUnit: 300 * UNIT_CONST.YARD_IN_M,
+        lenghtUnit: UNIT_CONST.POUND_IN_G,
+        direct: false,
+    },
+    {
+        type: UNIT_TYPE.NES,
+        label: "NeS (Woollen Count or Yorkshire skein)",
+        unit: "256 yards / pound",
+        massUnit: 256 * UNIT_CONST.YARD_IN_M,
+        lenghtUnit: UNIT_CONST.POUND_IN_G,
+        direct: false,
+    },
+    {
+        type: UNIT_TYPE.NEK,
+        label: "NeK, NeW (Worsted Count)",
+        unit: "560 yards / pound",
+        massUnit: 560 * UNIT_CONST.YARD_IN_M,
+        lenghtUnit: UNIT_CONST.POUND_IN_G,
+        direct: false,
+    },
+    {
         type: UNIT_TYPE.GRIST,
         label: "Grist (jute yarn)",
         unit: "pounds / 14,400 yards",
@@ -109,14 +154,6 @@ export const units = [
         direct: true,
     },
     {
-        type: UNIT_TYPE.NM,
-        label: "Metric cotton count (Nm)",
-        unit: "1.000 meters / kilogram",
-        massUnit: 1000,
-        lenghtUnit: 1000,
-        direct: false,
-    },
-    {
         type: UNIT_TYPE.SPUN_SILK,
         label: "Spun silk",
         unit: "840 yards / pound",
@@ -125,14 +162,21 @@ export const units = [
         direct: false,
     },
     {
+        type: UNIT_TYPE.GR_YARD,
+        label: "gr/yard",
+        unit: "grains / yard",
+        massUnit: UNIT_CONST.GRAIN_IN_G,
+        lenghtUnit: UNIT_CONST.YARD_IN_M,
+        direct: true,
+    },
+    {
         type: UNIT_TYPE.BASE,
-        label: "Base",
+        label: "g/m",
         unit: "gram / meter",
         massUnit: 1,
         lenghtUnit: 1,
         direct: true,
     },
-
 ]
 
 export function fromUnitToBase(unitType, v) {
