@@ -75,8 +75,8 @@ export const units = [
     },
     {
         type: UNIT_TYPE.NM,
-        label: "Metric cotton count (Nm)",
-        unit: "1.000 meters / kilogram",
+        label: "Nm (Metric cotton count)",
+        unit: "1,000 meters / kilogram",
         massUnit: 1000,
         lenghtUnit: 1000,
         direct: false,
@@ -114,6 +114,14 @@ export const units = [
         direct: false,
     },
     {
+        type: UNIT_TYPE.SPUN_SILK,
+        label: "Spun silk",
+        unit: "840 yards / pound",
+        massUnit: UNIT_CONST.POUND_IN_G,
+        lenghtUnit: 840 * UNIT_CONST.YARD_IN_M,
+        direct: false,
+    },
+    {
         type: UNIT_TYPE.GRIST,
         label: "Grist (jute yarn)",
         unit: "pounds / 14,400 yards",
@@ -148,18 +156,10 @@ export const units = [
     {
         type: UNIT_TYPE.SILK_COUNT,
         label: "Silk count",
-        unit: "drams / 1.000 yards",
+        unit: "drams / 1,000 yards",
         massUnit: UNIT_CONST.DRAM_IN_G,
         lenghtUnit: 1000 * UNIT_CONST.YARD_IN_M,
         direct: true,
-    },
-    {
-        type: UNIT_TYPE.SPUN_SILK,
-        label: "Spun silk",
-        unit: "840 yards / pound",
-        massUnit: UNIT_CONST.POUND_IN_G,
-        lenghtUnit: 840 * UNIT_CONST.YARD_IN_M,
-        direct: false,
     },
     {
         type: UNIT_TYPE.GR_YARD,
@@ -172,7 +172,7 @@ export const units = [
     {
         type: UNIT_TYPE.BASE,
         label: "g/m",
-        unit: "gram / meter",
+        unit: "grams / meter",
         massUnit: 1,
         lenghtUnit: 1,
         direct: true,
