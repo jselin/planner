@@ -3,6 +3,7 @@ import './Weight.css';
 import { Table, Form, FormGroup, FormControl, ControlLabel } from 'react-bootstrap';
 import { UNIT_TYPE, units, unitsFormatter, fromUnitToBase } from './units.js';
 import { numberingToFloat } from './yarn-number'
+import Header from './Header.js'
 
 
 class Weight extends Component {
@@ -41,9 +42,7 @@ class Weight extends Component {
   render() {
     return (
       <div className="Weight">
-        <header className="Weight-header">
-          <h1 className="Weight-title">Yarn weight calculator</h1>
-        </header>
+        <Header header="Yarn weight calculator"/>
         <Form className="Input-Form" inline onSubmit={(e) => this.handleSubmit(e)}>
           <FormGroup>
             <ControlLabel>Yarn number</ControlLabel>{' '}

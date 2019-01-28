@@ -4,6 +4,7 @@ import Weight from './Weight.js';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import { Navbar, Nav, NavItem, NavDropdown, MenuItem } from 'react-bootstrap';
 import { IndexLinkContainer } from "react-router-bootstrap";
+import Header from './Header.js'
 
 
 class App extends Component {
@@ -28,17 +29,17 @@ class App extends Component {
                 <Navbar.Toggle />
               </Navbar.Header>
               <Navbar.Collapse>
-              <Nav>
-                <IndexLinkContainer to="/">
-                  <NavItem>Home</NavItem>
-                </IndexLinkContainer>
-                <IndexLinkContainer to="/calculator">
-                  <NavItem>Demand</NavItem>
-                </IndexLinkContainer>
-                <IndexLinkContainer to="/weight">
-                  <NavItem>Weights</NavItem>
-                </IndexLinkContainer>
-              </Nav>
+                <Nav>
+                  <IndexLinkContainer to="/">
+                    <NavItem>Home</NavItem>
+                  </IndexLinkContainer>
+                  <IndexLinkContainer to="/calculator">
+                    <NavItem>Demand</NavItem>
+                  </IndexLinkContainer>
+                  <IndexLinkContainer to="/weight">
+                    <NavItem>Weights</NavItem>
+                  </IndexLinkContainer>
+                </Nav>
               </Navbar.Collapse>
             </Navbar>
             <Route exact path="/" component={Home} />
@@ -55,14 +56,12 @@ class App extends Component {
 }
 function Home(props) {
   return (
-    <div className="App">
-      <header className="App-header">
-        <h1 className="App-title">About this site</h1>
-      </header>
+    <div>
+      <Header header="Home" />
       <p>
         This is the greatest site on earth.
       </p>
-    </div>
+    </div >
   );
 }
 function About(props) {
