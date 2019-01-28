@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import './App.css';
 import Weight from './Weight.js';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { Navbar, Nav, NavItem, NavDropdown, MenuItem } from 'react-bootstrap';
+import { IndexLinkContainer } from "react-router-bootstrap";
 
 
 class App extends Component {
@@ -13,27 +15,41 @@ class App extends Component {
 
   render() {
     return (
-      <Router>
-        <div>
-          <ul>
-            <li>
-              <Link to="/">Home</Link>
-            </li>
-            <li>
-              <Link to="/about">About</Link>
-            </li>
-            <li>
-              <Link to="/weight">Yarn weight calculator</Link>
-            </li>
-          </ul>
-
-          <hr />
-
-          <Route exact path="/" component={Home} />
-          <Route path="/about" component={About} />
-          <Route path="/weight" component={Weight} />
-        </div>
-      </Router>
+      <div className="App">
+        <Router>
+          <div>
+            <Navbar fluid collapseOnSelect>
+              <Navbar.Header>
+                <IndexLinkContainer to="/">
+                  <Navbar.Brand>
+                    Texdesigners
+                </Navbar.Brand>
+                </IndexLinkContainer>
+                <Navbar.Toggle />
+              </Navbar.Header>
+              <Navbar.Collapse>
+              <Nav>
+                <IndexLinkContainer to="/">
+                  <NavItem>Home</NavItem>
+                </IndexLinkContainer>
+                <IndexLinkContainer to="/calculator">
+                  <NavItem>Demand</NavItem>
+                </IndexLinkContainer>
+                <IndexLinkContainer to="/weight">
+                  <NavItem>Weights</NavItem>
+                </IndexLinkContainer>
+              </Nav>
+              </Navbar.Collapse>
+            </Navbar>
+            <Route exact path="/" component={Home} />
+            <Route path="/about" component={About} />
+            <Route path="/weight" component={Weight} />
+          </div>
+        </Router>
+        <p className="Bottom-legend">
+          Copyright Jari Selin <a href="mailto:yarnweightcalculator@selinf.fi">Send feedback</a>
+        </p>
+      </div>
     );
   }
 }
@@ -41,10 +57,10 @@ function Home(props) {
   return (
     <div className="App">
       <header className="App-header">
-        <h1 className="App-title">Texdesigners</h1>
+        <h1 className="App-title">About this site</h1>
       </header>
-      <p className="Bottom-legend">
-        Copyright Jari Selin <a href="mailto:yarnweightcalculator@selinf.fi">Give feedback</a>
+      <p>
+        This is the greatest site on earth.
       </p>
     </div>
   );

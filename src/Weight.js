@@ -67,9 +67,6 @@ class Weight extends Component {
           <Yarns base={this.state.base} />
         </div>
         <UnitLegend/>
-        <p className="Bottom-legend">
-          Copyright <a href="mailto:yarnweightcalculator@selinf.fi">Jari Selin</a>
-       </p>
       </div>
     );
   }
