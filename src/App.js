@@ -4,7 +4,8 @@ import Weight from './Weight.js';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import { Navbar, Nav, NavItem, NavDropdown, MenuItem } from 'react-bootstrap';
 import { IndexLinkContainer } from "react-router-bootstrap";
-import Header from './Header.js'
+import Header from './Header.js';
+import Demand from './Demand.js';
 
 
 class App extends Component {
@@ -33,7 +34,7 @@ class App extends Component {
                   <IndexLinkContainer to="/">
                     <NavItem>Home</NavItem>
                   </IndexLinkContainer>
-                  <IndexLinkContainer to="/calculator">
+                  <IndexLinkContainer to="/demand">
                     <NavItem>Demand</NavItem>
                   </IndexLinkContainer>
                   <IndexLinkContainer to="/weight">
@@ -44,6 +45,7 @@ class App extends Component {
             </Navbar>
             <Route exact path="/" component={Home} />
             <Route path="/about" component={About} />
+            <Route path="/demand" component={Demand} />
             <Route path="/weight" component={Weight} />
           </div>
         </Router>
