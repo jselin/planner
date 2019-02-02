@@ -11,9 +11,9 @@ class Header extends Component {
 
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <h1 className="App-title"> {this.props.header}</h1>
+      <div className="Header">
+        <header className="Header-header">
+          <h1 className="Header-title"> {this.props.header}</h1>
         </header>
       </div>
 

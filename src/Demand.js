@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './Demand.css';
-import { Table, Form, FormGroup, FormControl, ControlLabel } from 'react-bootstrap';
+import { Table, Form, FormGroup, FormControl, ControlLabel, HelpBlock, InputGroup } from 'react-bootstrap';
 import Header from './Header.js';
 
 
@@ -27,17 +27,13 @@ class Demand extends Component {
     this.state = {
       finished_lenght_m: 1.0,
       headings_hems_lenght_m: 0.1,
-      total_lenght_m: 0,
     }
   }
 
-  handleValueUpdate = (e) => {
+  handleChange = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    this.setState({
-      finished_lenght_m: e.target.value,
-      total_lenght_m: this.calculate(),
-    });
+    this.setState({ [e.target.name]: e.target.value });
   }
 
   handleSubmit = (e) => {
@@ -45,37 +41,65 @@ class Demand extends Component {
     e.stopPropagation();
   }
 
-  calculate() {
-    return (
-      this.state.finished_lenght_m + this.state.headings_hems_lenght_m
-    );
-  }
-
   render() {
     return (
       <div className="Demand">
         <Header header="Demand planner" />
-        <Form className="Input-Form" inline onSubmit={(e) => this.handleSubmit(e)}>
-          <FormGroup>
-            <ControlLabel>Yarn number</ControlLabel>{' '}
-            <FormControl
-              id="formControlsText"
-              onChange={(e) => this.handleValueUpdate(e)} />{' '}
-          </FormGroup>
-        </Form>
-
-        <Table className="Results-Table" bordered hover>
-          <tbody>
-            <tr key="total_lenght_m">
-              <td>Total lenght</td>
-              <td>{this.state.total_lenght_m}</td>
-              <td>m</td>
-            </tr>
-          </tbody>
-        </Table>
+        <div className="Content">
+          <Form onSubmit={(e) => this.handleSubmit(e)}>
+            <InputFormatter
+              name="finished_lenght_m"
+              label="Finished lenght"
+              placeholder={this.state.finished_lenght_m}
+              unit="m"
+              help="The intended finished lenght of your project"
+              callback={(e) => this.handleChange(e)}
+            />
+            <InputFormatter
+              name="headings_hems_lenght_m"
+              label="Headings and hems lenght"
+              placeholder={this.state.headings_hems_lenght_m}
+              unit="cm"
+              help="Headings and hems lenght on each side"
+              callback={(e) => this.handleChange(e)}
+            />
+          </Form>
+          <Result dim={this.state} />
+        </div>
       </div>
     );
   }
+}
+
+const InputFormatter = (props) => {
+  return (
+    <FormGroup>
+      <ControlLabel>{props.label}</ControlLabel>{' '}
+      <InputGroup>
+        <FormControl
+          name={props.name}
+          placeholder={props.placeholder}
+          onChange={props.callback} />
+        <InputGroup.Addon>{props.unit}</InputGroup.Addon>
+      </InputGroup>
+      <HelpBlock>{props.help}</HelpBlock>
+    </FormGroup>
+  );
+}
+
+const Result = (props) => {
+  //console.log(props);
+  return (
+    < Table className="Results-Table" bordered hover >
+      <tbody>
+        <tr key="total_lenght_m">
+          <td>Total lenght</td>
+          <td>{parseFloat(props.dim.finished_lenght_m) + parseFloat(props.dim.headings_hems_lenght_m)}</td>
+          <td>m</td>
+        </tr>
+      </tbody>
+    </Table >
+  );
 }
 
 /*

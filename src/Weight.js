@@ -6,6 +6,7 @@ import { numberingToFloat } from './yarn-number'
 import Header from './Header.js'
 
 
+
 class Weight extends Component {
   constructor(props) {
     super(props);
@@ -42,7 +43,7 @@ class Weight extends Component {
   render() {
     return (
       <div className="Weight">
-        <Header header="Yarn weight calculator"/>
+        <Header header={"Yarn weight calculator"}/>
         <Form className="Input-Form" inline onSubmit={(e) => this.handleSubmit(e)}>
           <FormGroup>
             <ControlLabel>Yarn number</ControlLabel>{' '}

@@ -1,60 +1,10 @@
 .Demand {
-  text-align: center;
-  width: 100%;
 }
 
-.Demand-header {
-  background-color: rgb(180, 73, 247);
+.Content {
   padding: 10px;
-  color: white;
-}
-
-.Demand-title {
-  font-size: 2em;
-  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-  font-Demand: bold;
-  vertical-align: middle;
-  padding-bottom: 3px;
-}
-
-.Demand-intro {
-  margin: 10px;  
-  font-size: large;
-}
-
-.Demand-results {
-  font-size: large;
-}
-
-.Input-Form {
-  padding: 15px;
-}
-
-.Type-help {
-  font-size: small;
-  color: #bbbbbb;
-}
-
-.Type-label {
-  color: #555555;
-}
-
-.Bottom-legend{
-  font-size: small;
-  color: #bbbbbb;
-}
-
-.Input-Table {
-  text-align: left;
 }
 
 .Results-Table {
   text-align: left;
-}
-
-.Table-container {
-  padding: 15px;
-}
-
-th, td {
 }
