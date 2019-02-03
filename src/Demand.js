@@ -1,39 +1,50 @@
 import React, { Component } from 'react';
 import './Demand.css';
-import { Table, Form, FormGroup, FormControl, ControlLabel, HelpBlock, InputGroup } from 'react-bootstrap';
+import calculateDemand from './calculateDemand';
+
+import { Grid, Row, Table, Form, FormGroup, FormControl, Col, InputGroup, ControlLabel } from 'react-bootstrap'
+//import Table from 'react-bootstrap/Table';
+//import Form from 'react-bootstrap/Form';
+//import InputGroup from 'react-bootstrap/InputGroup';
+//import Col from 'react-bootstrap/Col';
+//import Container from 'react-bootstrap/Container';
 import Header from './Header.js';
-
-
-/*
-Length shrinkage (m) = (Length + Headings/Hems) / 100 x Length shrinkage (%)										
-Width shrinkage (cm) = Width / 100 x Width shrinkage (%)										
-Length take-up (m) =  ((Length + Headings/Hems + Length shringage (m) + Fringes) x Number of designs + Test Peace x Number of test pieces + Loom waste + Cutting Margin) / 100 x Length take up (%)										
-Width draw-in (cm) = (Width + Width shrinkage (cm)) / 100 * Width draw-in (%)										
-Fabric lenght (m) = (Lenght + Headings/Hems + Lenght shrinkage (m)) x Number of designs + Length of Test Piece x Number of test pieces + Length take-up (m)										
-										
-Warp length (m) = (Length + Headings/Hems + Length shringage (m) + Fringes) x Number of designs + Length of Test Piece x Number of test pieces + Loom waste + Cutting Margin + Length take-up (m)										
-Warp width (m) = Width + Width shrinkage (cm) + Width draw-in (cm)										
-Number of ends = Warp width (cm) x Ends per cm										
-Number of picks = Warp length (m) x 100 x Picks per cm										
-										
-Warp demand (g) = Ends per cm x Warp width (cm) x Warp lenght (m) x Yarn TEX number / 1000 										
-Weft demand (g) = Picks per cm tiheys x Warp width (cm) x Fabric length (m) x Yarn TEX number /1000										
-*/
 
 
 class Demand extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      finished_lenght_m: 1.0,
-      headings_hems_lenght_m: 0.1,
+      // Design
+      finished_lenght_m: 1,
+      headings_hems_lenght_m: 0,
+      lenght_shrinkage_p: 0,
+      fringe_lenght_m: 0,
+      finished_width_cm: 100,
+      width_shrinkage_p: 0,
+      number_of_designs: 1,
+
+      // Weaving
+      test_piece_lenght_m: 0,
+      number_of_test_pieces: 0,
+      loom_waste_lenght_m: 0,
+      cutting_margin_m: 0,
+      lenght_take_up_p: 0,
+      width_draw_in_p: 0,
+      selvedge_warps: 0,
+
+      // Yarns
+      warp_yarn_tex: 24,
+      weft_yarn_tex: 24,
+      picks_per_cm: 20,
+      ends_per_cm: 20,
     }
   }
 
   handleChange = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    this.setState({ [e.target.name]: e.target.value });
+    this.setState({ [e.target.name]: parseFloat(e.target.value) });
   }
 
   handleSubmit = (e) => {
@@ -42,83 +53,304 @@ class Demand extends Component {
   }
 
   render() {
+    const callback = (e) => this.handleChange(e);
+    const submit = (e) => this.handleSubmit(e);
     return (
       <div className="Demand">
         <Header header="Demand planner" />
         <div className="Content">
-          <Form onSubmit={(e) => this.handleSubmit(e)}>
-            <InputFormatter
-              name="finished_lenght_m"
-              label="Finished lenght"
-              placeholder={this.state.finished_lenght_m}
-              unit="m"
-              help="The intended finished lenght of your project"
-              callback={(e) => this.handleChange(e)}
-            />
-            <InputFormatter
-              name="headings_hems_lenght_m"
-              label="Headings and hems lenght"
-              placeholder={this.state.headings_hems_lenght_m}
-              unit="cm"
-              help="Headings and hems lenght on each side"
-              callback={(e) => this.handleChange(e)}
-            />
-          </Form>
-          <Result dim={this.state} />
+          <Grid>
+            <Row>
+              <Col>
+                <DesingInput
+                  dimensions={this.state}
+                  callback={callback}
+                  submit={submit}
+                />
+              </Col>
+              <Col>
+                <WeawingInput
+                  dimensions={this.state}
+                  callback={callback}
+                  submit={submit}
+                />
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <YarnInput
+                  dimensions={this.state}
+                  callback={callback}
+                  submit={submit}
+                />
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <Result
+                  dimensions={this.state}
+                />
+              </Col>
+            </Row>
+          </Grid>
         </div>
       </div>
     );
   }
 }
 
+const DesingInput = (props) => {
+  const d = props.dimensions;
+  const callback = props.callback;
+  const submit = props.submit;
+
+  return (
+    <div>
+      <h1>Design</h1>
+      <Form horizontal onSubmit={(e) => this.handleSubmit(e)}>
+        <InputFormatter
+          name="finished_lenght_m"
+          label="Finished lenght"
+          placeholder={d.finished_lenght_m}
+          unit="m"
+          callback={callback}
+        />
+        <InputFormatter
+          name="headings_hems_lenght_m"
+          label="Headings and hems lenght"
+          placeholder={d.headings_hems_lenght_m}
+          unit="m"
+          callback={callback}
+        />
+        <InputFormatter
+          name="lenght_shrinkage_p"
+          label="Lenght shrinkage"
+          placeholder={d.lenght_shrinkage_p}
+          unit="%"
+          callback={callback}
+        />
+        <InputFormatter
+          name="fring_lenght_m"
+          label="Fringe lenght"
+          placeholder={d.fringe_lenght_m}
+          unit="m"
+          callback={callback}
+        />
+        <InputFormatter
+          name="finished_width_cm"
+          label="Finished width"
+          placeholder={d.finished_width_cm}
+          unit="cm"
+          callback={callback}
+        />
+        <InputFormatter
+          name="width_shrinkage_p"
+          label="Width shrinkage"
+          placeholder={d.width_shrinkage_p}
+          unit="%"
+          callback={callback}
+        />
+        <InputFormatter
+          name="number_of_designs"
+          label="Number of designs"
+          placeholder={d.number_of_designs}
+          unit="n"
+          callback={callback}
+        />
+      </Form>
+    </div>
+  );
+}
+
+const WeawingInput = (props) => {
+  const d = props.dimensions;
+  const callback = props.callback;
+  const submit = props.submit;
+
+  return (
+    <div>
+      <h2>Weaving</h2>
+      <Form horizontal onSubmit={(e) => this.handleSubmit(e)}>
+        <InputFormatter
+          name="test_piece_lenght_m"
+          label="Test piece lenght"
+          placeholder={d.test_piece_lenght_m}
+          unit="m"
+          callback={callback}
+        />
+        <InputFormatter
+          name="number_of_test_pieces"
+          label="Number of test pieces"
+          placeholder={d.number_of_test_pieces}
+          unit="n"
+          callback={callback}
+        />
+        <InputFormatter
+          name="loom_waste_lenght_m"
+          label="Loom waste lenght"
+          placeholder={d.loom_waste_lenght_m}
+          unit="m"
+          callback={callback}
+        />
+        <InputFormatter
+          name="cutting_margin_m"
+          label="Cutting margin"
+          placeholder={d.cutting_margin_m}
+          unit="m"
+          callback={callback}
+        />
+        <InputFormatter
+          name="lenght_take_up_p"
+          label="Lenght take up"
+          placeholder={d.lenght_take_up_p}
+          unit="%"
+          callback={callback}
+        />
+        <InputFormatter
+          name="width_draw_in_p"
+          label="Width draw-in "
+          placeholder={d.width_draw_in_p}
+          unit="%"
+          callback={callback}
+        />
+        <InputFormatter
+          name="selvedge_warps"
+          label="Selvedge warps"
+          placeholder={d.selvedge_warps}
+          unit="n"
+          callback={callback}
+        />
+      </Form>
+    </div>
+  );
+}
+
+const YarnInput = (props) => {
+  const d = props.dimensions;
+  const callback = props.callback;
+  const submit = props.submit;
+
+  return (
+    <div>
+      <h1>Yarns</h1>
+      <Form horizontal onSubmit={(e) => this.handleSubmit(e)}>
+        <InputFormatter
+          name="warp_yarn_tex"
+          label="Warp weight"
+          placeholder={d.warp_yarn_tex}
+          unit="TEX"
+          callback={callback}
+        />
+        <InputFormatter
+          name="ends_per_cm"
+          label="Warp thickness"
+          placeholder={d.ends_per_cm}
+          unit="ends / cm"
+          callback={callback}
+        />
+        <InputFormatter
+          name="weft_yarn_tex"
+          label="Weft weight"
+          placeholder={d.weft_yarn_tex}
+          unit="TEX"
+          callback={callback}
+        />
+        <InputFormatter
+          name="picks_per_cm"
+          label="Weft thickness"
+          placeholder={d.picks_per_cm}
+          unit="pics/cm"
+          callback={callback}
+        />
+      </Form>
+    </div>
+  );
+}
+
+
+
 const InputFormatter = (props) => {
   return (
-    <FormGroup>
-      <ControlLabel>{props.label}</ControlLabel>{' '}
-      <InputGroup>
-        <FormControl
-          name={props.name}
-          placeholder={props.placeholder}
-          onChange={props.callback} />
-        <InputGroup.Addon>{props.unit}</InputGroup.Addon>
-      </InputGroup>
-      <HelpBlock>{props.help}</HelpBlock>
+    <FormGroup controlId={props.name}>
+      <Row>
+        <Col sm="2">
+          <ControlLabel>{props.label}</ControlLabel>
+        </Col>
+        <Col sm="2">
+          <InputGroup>
+            <FormControl
+              bsSize="small"
+              name={props.name}
+              placeholder={String(props.placeholder)}
+              type="number"
+              onChange={props.callback} />
+            <InputGroup.Addon>{props.unit}</InputGroup.Addon>
+          </InputGroup>
+        </Col>
+      </Row>
     </FormGroup>
   );
 }
 
+
 const Result = (props) => {
-  //console.log(props);
+  const r = calculateDemand(props.dimensions);
   return (
-    < Table className="Results-Table" bordered hover >
-      <tbody>
-        <tr key="total_lenght_m">
-          <td>Total lenght</td>
-          <td>{parseFloat(props.dim.finished_lenght_m) + parseFloat(props.dim.headings_hems_lenght_m)}</td>
-          <td>m</td>
-        </tr>
-      </tbody>
-    </Table >
+    <div>
+      <h1>Calculated demand</h1>
+      < Table className="Results-Table" bordered hover >
+        <tbody>
+          <ResultFormatter
+            key="warp_lenght_m"
+            label="Warp lenght"
+            value={r.warp_lenght_m}
+            unit={"m"}
+          />
+          <ResultFormatter
+            key="warp_width_cm"
+            label="Warp width"
+            value={r.warp_width_cm}
+            unit={"cm"}
+          />
+          <ResultFormatter
+            key="number_of_ends"
+            label="Number of ends"
+            value={r.number_of_ends}
+            unit={"ends"}
+          />
+          <ResultFormatter
+            key="number_of_pics"
+            label="Number of pics"
+            value={r.number_of_pics}
+            unit={"pics"}
+          />
+          <ResultFormatter
+            key="warp_demand_g"
+            label="Warp demand"
+            value={r.warp_demand_g}
+            unit={"g"}
+          />
+          <ResultFormatter
+            key="weft_demand_g"
+            label="Weft demand"
+            value={r.weft_demand_g}
+            unit={"g"}
+          />
+        </tbody>
+      </Table >
+    </div>
   );
 }
 
-/*
-<Table className="Input-Table" bordered hover>
-      <tbody>
-        <tr key="finished_lenght_m">
-          <td>Finished lenght</td>
-          <td>{this.state.finished_lenght_m}</td>
-          <td>m</td>
-        </tr>
-        <tr key="headings_hems_lenght_m">
-          <td>Headings and hems lenght</td>
-          <td>{this.state.headings_hems_lenght_m}</td>
-          <td>m</td>
-        </tr>
-      </tbody>
-    </Table>
-
-    */
+const ResultFormatter = (props) => {
+  return (
+    <tr key={props.key}>
+      <td>{props.label}</td>
+      <td>{props.value}</td>
+      <td>{props.unit}</td>
+    </tr>
+  );
+}
 
 
 export default Demand;
