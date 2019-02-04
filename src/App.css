@@ -1,6 +1,10 @@
 .App {
 }
 
+.navbar {
+  margin-bottom: 0px;
+}
+
 .Bottom-legend{
   text-align: center;
   font-size: small;

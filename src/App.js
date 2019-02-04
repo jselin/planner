@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
-import './App.css';
-import Weight from './Weight.js';
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import { Navbar, Nav, NavItem } from 'react-bootstrap';
 import { IndexLinkContainer } from "react-router-bootstrap";
+
+import './App.css';
+
+import Weight from './Weight.js';
 import Header from './Header.js';
 import Demand from './Demand.js';
 

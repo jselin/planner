@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './Demand.css';
 import calculateDemand from './calculateDemand';
 
-import { Grid, Row, Table, Form, FormGroup, FormControl, Col, InputGroup, ControlLabel } from 'react-bootstrap'
+import { Grid, Table, Form, FormGroup, FormControl, Col, InputGroup, ControlLabel } from 'react-bootstrap'
 //import Table from 'react-bootstrap/Table';
 //import Form from 'react-bootstrap/Form';
 //import InputGroup from 'react-bootstrap/InputGroup';
@@ -121,14 +121,63 @@ const ResultFormatter = (props) => {
   );
 }
 
+const Result = (props) => {
+  const r = calculateDemand(props.dimensions);
+  return (
+    <div>
+      <h2>Calculated demand</h2>
+      <Table className="Results-Table" bordered hover >
+        <tbody>
+          <ResultFormatter
+            key="warp_lenght_m"
+            label="Warp lenght"
+            value={r.warp_lenght_m}
+            unit={"m"}
+          />
+          <ResultFormatter
+            key="warp_width_cm"
+            label="Warp width"
+            value={r.warp_width_cm}
+            unit={"cm"}
+          />
+          <ResultFormatter
+            key="number_of_ends"
+            label="Number of ends"
+            value={r.number_of_ends}
+            unit={"ends"}
+          />
+          <ResultFormatter
+            key="number_of_pics"
+            label="Number of pics"
+            value={r.number_of_pics}
+            unit={"pics"}
+          />
+          <ResultFormatter
+            key="warp_demand_g"
+            label="Warp demand"
+            value={r.warp_demand_g}
+            unit={"g"}
+          />
+          <ResultFormatter
+            key="weft_demand_g"
+            label="Weft demand"
+            value={r.weft_demand_g}
+            unit={"g"}
+          />
+        </tbody>
+      </Table >
+    </div>
+  );
+}
+
+
 const DesingInput = (props) => {
   const d = props.dimensions;
   const callback = props.callback;
-  const submit = props.submit;
 
   return (
     <div>
-      <h1>Design</h1>
+      <h2>Design</h2>
       <InputFormatter
         name="finished_lenght_m"
         label="Finished lenght"
@@ -185,7 +234,6 @@ const DesingInput = (props) => {
 const WeawingInput = (props) => {
   const d = props.dimensions;
   const callback = props.callback;
-  const submit = props.submit;
 
   return (
     <div>
@@ -246,11 +294,10 @@ const WeawingInput = (props) => {
 const YarnInput = (props) => {
   const d = props.dimensions;
   const callback = props.callback;
-  const submit = props.submit;
-
+  
   return (
     <div>
-      <h1>Yarns</h1>
+      <h2>Yarns</h2>
       <InputFormatter
         name="warp_yarn_tex"
         label="Warp weight"
@@ -282,55 +329,5 @@ const YarnInput = (props) => {
     </div >
   );
 }
-
-const Result = (props) => {
-  const r = calculateDemand(props.dimensions);
-  return (
-    <div>
-      <h1>Calculated demand</h1>
-      <Table className="Results-Table" bordered hover >
-        <tbody>
-          <ResultFormatter
-            key="warp_lenght_m"
-            label="Warp lenght"
-            value={r.warp_lenght_m}
-            unit={"m"}
-          />
-          <ResultFormatter
-            key="warp_width_cm"
-            label="Warp width"
-            value={r.warp_width_cm}
-            unit={"cm"}
-          />
-          <ResultFormatter
-            key="number_of_ends"
-            label="Number of ends"
-            value={r.number_of_ends}
-            unit={"ends"}
-          />
-          <ResultFormatter
-            key="number_of_pics"
-            label="Number of pics"
-            value={r.number_of_pics}
-            unit={"pics"}
-          />
-          <ResultFormatter
-            key="warp_demand_g"
-            label="Warp demand"
-            value={r.warp_demand_g}
-            unit={"g"}
-          />
-          <ResultFormatter
-            key="weft_demand_g"
-            label="Weft demand"
-            value={r.weft_demand_g}
-            unit={"g"}
-          />
-        </tbody>
-      </Table >
-    </div>
-  );
-}
-
 
 export default Demand;
