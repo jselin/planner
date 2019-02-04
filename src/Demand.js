@@ -40,7 +40,6 @@ class Demand extends Component {
     this.getInitialState();
   }
   
-
   getUUID() {
     var uuid = localStorage.getItem('Texdesigners-uuid');
     if (uuid === null) {
