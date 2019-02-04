@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './Demand.css';
 import calculateDemand from './calculateDemand';
 
-import { Grid, Table, Form, FormGroup, FormControl, Col, InputGroup, ControlLabel } from 'react-bootstrap'
+import { Panel, Grid, Table, Form, FormGroup, FormControl, Col, InputGroup, ControlLabel } from 'react-bootstrap'
 //import Table from 'react-bootstrap/Table';
 //import Form from 'react-bootstrap/Form';
 //import InputGroup from 'react-bootstrap/InputGroup';
@@ -59,35 +59,35 @@ class Demand extends Component {
     return (
       <div className="Demand">
         <Header header="Demand planner" />
+        <Form onSubmit={(e) => this.handleSubmit(e)}>
+          <Grid fluid>
+            <Col sm={4}>
+              <DesingInput
+                dimensions={this.state}
+                callback={callback}
+                submit={submit}
+              />
+            </Col>
+            <Col sm={4}>
+              <WeawingInput
+                dimensions={this.state}
+                callback={callback}
+                submit={submit}
+              />
+            </Col>
+            <Col sm={4}>
+              <YarnInput
+                dimensions={this.state}
+                callback={callback}
+                submit={submit}
+              />
+            </Col>
+          </Grid>
+        </Form>
         <div className="Content">
-          <Form onSubmit={(e) => this.handleSubmit(e)}>
-            <Grid fluid>
-              <Col sm={4}>
-                <DesingInput
-                  dimensions={this.state}
-                  callback={callback}
-                  submit={submit}
-                />
-              </Col>
-              <Col sm={4}>
-                <WeawingInput
-                  dimensions={this.state}
-                  callback={callback}
-                  submit={submit}
-                />
-              </Col>
-              <Col sm={4}>
-                <YarnInput
-                  dimensions={this.state}
-                  callback={callback}
-                  submit={submit}
-                />
-              </Col>
-            </Grid>
-            <Result
-              dimensions={this.state}
-            />
-          </Form>
+          <Result
+            dimensions={this.state}
+          />
         </div>
       </div>
     );
@@ -125,51 +125,20 @@ const Result = (props) => {
   const r = calculateDemand(props.dimensions);
   return (
     <div>
-      <h2>Calculated demand</h2>
-      <Table className="Results-Table" bordered hover >
-        <tbody>
-          <ResultFormatter
-            key="warp_lenght_m"
-            label="Warp lenght"
-            value={r.warp_lenght_m}
-            unit={"m"}
-          />
-          <ResultFormatter
-            key="warp_width_cm"
-            label="Warp width"
-            value={r.warp_width_cm}
-            unit={"cm"}
-          />
-          <ResultFormatter
-            key="number_of_ends"
-            label="Number of ends"
-            value={r.number_of_ends}
-            unit={"ends"}
-          />
-          <ResultFormatter
-            key="number_of_pics"
-            label="Number of pics"
-            value={r.number_of_pics}
-            unit={"pics"}
-          />
-          <ResultFormatter
-            key="warp_demand_g"
-            label="Warp demand"
-            value={r.warp_demand_g}
-            unit={"g"}
-          />
-          <ResultFormatter
-            key="weft_demand_g"
-            label="Weft demand"
-            value={r.weft_demand_g}
-            unit={"g"}
-          />
-        </tbody>
-      </Table >
+      <Panel>
+        <Panel.Heading>
+          <Panel.Title>
+            Result
+          </Panel.Title>
+        </Panel.Heading>
+        <Panel.Body>
+          Warp lenght {r.warp_lenght_m}m, warp demand {r.warp_demand_g}g with {r.number_of_ends} ends <br></br>
+          Weft width {r.warp_width_cm}cm, weft demand {r.weft_demand_g}g with {r.number_of_pics} pics
+      </Panel.Body>
+      </Panel>
     </div>
   );
 }
-
 
 const DesingInput = (props) => {
   const d = props.dimensions;
@@ -294,7 +263,7 @@ const WeawingInput = (props) => {
 const YarnInput = (props) => {
   const d = props.dimensions;
   const callback = props.callback;
-  
+
   return (
     <div>
       <h2>Yarns</h2>
