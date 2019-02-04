@@ -2,12 +2,13 @@ import React, { Component } from 'react';
 import './Demand.css';
 import calculateDemand from './calculateDemand';
 
-import { Grid, Row, Table, Form, FormGroup, FormControl, Col, InputGroup, ControlLabel } from 'react-bootstrap'
-//import Table from 'react-bootstrap/Table';
-//import Form from 'react-bootstrap/Form';
-//import InputGroup from 'react-bootstrap/InputGroup';
-//import Col from 'react-bootstrap/Col';
-//import Container from 'react-bootstrap/Container';
+//import { Grid, Row, Table, Form, FormGroup, FormControl, Col, InputGroup, ControlLabel } from 'react-bootstrap'
+import Table from 'react-bootstrap/Table';
+import Form from 'react-bootstrap/Form';
+import InputGroup from 'react-bootstrap/InputGroup';
+import Col from 'react-bootstrap/Col';
+import Container from 'react-bootstrap/Container';
+
 import Header from './Header.js';
 
 
@@ -61,7 +62,7 @@ class Demand extends Component {
         <Header header="Demand planner" />
         <div className="Content">
           <Form onSubmit={(e) => this.handleSubmit(e)}>
-            <Grid fluid>
+            <Container fluid>
               <Col sm={4}>
                 <DesingInput
                   dimensions={this.state}
@@ -83,7 +84,7 @@ class Demand extends Component {
                   submit={submit}
                 />
               </Col>
-            </Grid>
+            </Container>
             <Result
               dimensions={this.state}
             />
@@ -96,18 +97,21 @@ class Demand extends Component {
 
 const InputFormatter = (props) => {
   return (
-    <FormGroup controlId={props.name}>
-      <ControlLabel>{props.label}</ControlLabel>
-      <InputGroup>
-        <FormControl
-          bsSize="small"
+    <Form.Group controlId={props.name}>
+      <Form.Label>{props.label}</Form.Label>
+      <InputGroup size="sm">
+        <Form.Control
           name={props.name}
           placeholder={String(props.placeholder)}
           type="number"
           onChange={props.callback} />
-        <InputGroup.Addon>{props.unit}</InputGroup.Addon>
+        <InputGroup.Append>
+          <InputGroup.Text>
+            {props.unit}
+          </InputGroup.Text>
+        </InputGroup.Append>
       </InputGroup>
-    </FormGroup>
+    </Form.Group>
   );
 }
 
@@ -124,7 +128,7 @@ const ResultFormatter = (props) => {
 const DesingInput = (props) => {
   const d = props.dimensions;
   const callback = props.callback;
-  const submit = props.submit;
+  //const submit = props.submit;
 
   return (
     <div>
@@ -185,7 +189,7 @@ const DesingInput = (props) => {
 const WeawingInput = (props) => {
   const d = props.dimensions;
   const callback = props.callback;
-  const submit = props.submit;
+  //const submit = props.submit;
 
   return (
     <div>
@@ -246,7 +250,7 @@ const WeawingInput = (props) => {
 const YarnInput = (props) => {
   const d = props.dimensions;
   const callback = props.callback;
-  const submit = props.submit;
+  //const submit = props.submit;
 
   return (
     <div>

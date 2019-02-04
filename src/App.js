@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import './App.css';
-import Weight from './Weight.js';
 import { BrowserRouter as Router, Route } from "react-router-dom";
-import { Navbar, Nav, NavItem } from 'react-bootstrap';
+import Navbar from 'react-bootstrap/Navbar';
+import Nav from 'react-bootstrap/Nav';
 import { IndexLinkContainer } from "react-router-bootstrap";
+
+import Weight from './Weight.js';
 import Header from './Header.js';
 import Demand from './Demand.js';
 
@@ -21,24 +23,22 @@ class App extends Component {
         <Router>
           <div>
             <Navbar fluid collapseOnSelect>
-              <Navbar.Header>
                 <IndexLinkContainer to="/">
                   <Navbar.Brand>
                     Texdesigners
                 </Navbar.Brand>
                 </IndexLinkContainer>
                 <Navbar.Toggle />
-              </Navbar.Header>
               <Navbar.Collapse>
                 <Nav>
                   <IndexLinkContainer to="/">
-                    <NavItem>Home</NavItem>
+                    <Nav.Item>Home</Nav.Item>
                   </IndexLinkContainer>
                   <IndexLinkContainer to="/demand">
-                    <NavItem>Demand</NavItem>
+                    <Nav.Item>Demand</Nav.Item>
                   </IndexLinkContainer>
                   <IndexLinkContainer to="/weight">
-                    <NavItem>Weights</NavItem>
+                    <Nav.Item>Weights</Nav.Item>
                   </IndexLinkContainer>
                 </Nav>
               </Navbar.Collapse>

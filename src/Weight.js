@@ -1,11 +1,16 @@
 import React, { Component } from 'react';
 import './Weight.css';
-import { Table, Form, FormGroup, FormControl, ControlLabel } from 'react-bootstrap';
+//import { Table, Form, FormGroup, FormControl, ControlLabel } from 'react-bootstrap';
+
+import Table from 'react-bootstrap/Table';
+import Form from 'react-bootstrap/Form';
+//import InputGroup from 'react-bootstrap/InputGroup';
+//import Col from 'react-bootstrap/Col';
+//import Container from 'react-bootstrap/Container';
+
 import { UNIT_TYPE, units, unitsFormatter, fromUnitToBase } from './units.js';
 import { numberingToFloat } from './yarn-number'
 import Header from './Header.js'
-
-
 
 class Weight extends Component {
   constructor(props) {
@@ -45,22 +50,22 @@ class Weight extends Component {
       <div className="Weight">
         <Header header={"Yarn weight calculator"}/>
         <Form className="Input-Form" inline onSubmit={(e) => this.handleSubmit(e)}>
-          <FormGroup>
-            <ControlLabel>Yarn number</ControlLabel>{' '}
-            <FormControl
+          <Form.Group>
+            <Form.Label>Yarn number</Form.Label>{' '}
+            <Form.Control
               id="formControlsText"
               onChange={(e) => this.handleValueUpdate(e)} />{' '}
-            <FormControl
+            <Form.Control
               componentClass="select"
               id="unit-select"
               placeholder="Tex"
               onChange={(e) => this.handleTypeUpdate(e)}>
               <UnitOptions />
-            </FormControl>{' '}
+            </Form.Control>{' '}
             {units.find(unit =>
               unit.type === this.state.inputUnitType
             ).unit}
-          </FormGroup>
+          </Form.Group>
         </Form>
         <br />
         <div className="Table-container">

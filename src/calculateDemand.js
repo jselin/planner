@@ -21,7 +21,7 @@ Warp demand (g) = Ends per cm x Warp width (cm) x Warp lenght (m) x Yarn TEX num
 Weft demand (g) = Picks per cm tiheys x Warp width (cm) x Fabric length (m) x Yarn TEX number /1000										
 */
 
-export default function calculateDemand(d) {
+function calculateDemand(d) {
   let length_shrinkage_m =
     (d.finished_lenght_m + d.headings_hems_lenght_m) *
     (d.lenght_shrinkage_p / 100);
@@ -78,3 +78,5 @@ const toTwoDecimals = (d) => {
 const toOneDecimal = (d) => {
   return Math.round(d * 10) / 10;
 }
+
+export default calculateDemand;
