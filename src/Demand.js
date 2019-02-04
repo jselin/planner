@@ -3,10 +3,11 @@ import './Demand.css';
 import calculateDemand from './calculateDemand';
 import firebase from "./firebase.js";
 
-
 import { Tooltip, OverlayTrigger, Panel, Grid, Form, FormGroup, FormControl, Col, InputGroup, ControlLabel } from 'react-bootstrap'
 import Header from './Header.js';
 
+const uuidv4 = require('uuid/v4');
+const localStorage = window.localStorage;
 
 class Demand extends Component {
   constructor(props) {
@@ -39,9 +40,19 @@ class Demand extends Component {
     this.getInitialState();
   }
 
+  getUUID() {
+    var uuid = localStorage.getItem('Texdesigners-uuid');
+    if (uuid === null) {
+      uuid = uuidv4();
+      localStorage.setItem('Texdesigners-uuid', uuid);
+    }
+    return uuid;
+  }
+
   getInitialState = () => {
+    const uuid = this.getUUID();
     const db = firebase.firestore();
-    const docRef = db.collection("plans").doc("test");
+    const docRef = db.collection("plans").doc(uuid);
     docRef.get().then( (doc) => {
       if (doc.exists) {
         this.setState(doc.data());
@@ -50,10 +61,10 @@ class Demand extends Component {
   }
 
   post = (state, e) => {
+    const uuid = this.getUUID();
     const db = firebase.firestore();
     const newState = Object.assign(state, { [e.target.name]: parseFloat(e.target.value) });
-    console.log(newState);
-    db.collection("plans").doc("test").set(newState);
+    db.collection("plans").doc(uuid).set(newState);
   }
 
   handleChange = (e) => {
