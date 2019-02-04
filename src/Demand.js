@@ -1,13 +1,10 @@
 import React, { Component } from 'react';
 import './Demand.css';
 import calculateDemand from './calculateDemand';
+import firebase from "./firebase.js";
 
-import { Panel, Grid, Table, Form, FormGroup, FormControl, Col, InputGroup, ControlLabel } from 'react-bootstrap'
-//import Table from 'react-bootstrap/Table';
-//import Form from 'react-bootstrap/Form';
-//import InputGroup from 'react-bootstrap/InputGroup';
-//import Col from 'react-bootstrap/Col';
-//import Container from 'react-bootstrap/Container';
+
+import { Tooltip, OverlayTrigger, Panel, Grid, Form, FormGroup, FormControl, Col, InputGroup, ControlLabel } from 'react-bootstrap'
 import Header from './Header.js';
 
 
@@ -39,19 +36,37 @@ class Demand extends Component {
       picks_per_cm: 20,
       ends_per_cm: 20,
     }
+    this.getInitialState();
+  }
+
+  getInitialState = () => {
+    const db = firebase.firestore();
+    const docRef = db.collection("plans").doc("test");
+    docRef.get().then( (doc) => {
+      if (doc.exists) {
+        this.setState(doc.data());
+      }
+    });
+  }
+
+  post = (state, e) => {
+    const db = firebase.firestore();
+    const newState = Object.assign(state, { [e.target.name]: parseFloat(e.target.value) });
+    console.log(newState);
+    db.collection("plans").doc("test").set(newState);
   }
 
   handleChange = (e) => {
     e.preventDefault();
     e.stopPropagation();
     this.setState({ [e.target.name]: parseFloat(e.target.value) });
+    this.post(this.state, e);
   }
 
   handleSubmit = (e) => {
     e.preventDefault();
     e.stopPropagation();
   }
-
 
   render() {
     const callback = (e) => this.handleChange(e);
@@ -94,30 +109,28 @@ class Demand extends Component {
   }
 }
 
+const tooltip = (
+  <Tooltip id="tooltip">
+    Holy moly!
+  </Tooltip>
+)
+
 const InputFormatter = (props) => {
   return (
     <FormGroup controlId={props.name}>
       <ControlLabel>{props.label}</ControlLabel>
-      <InputGroup>
-        <FormControl
-          bsSize="small"
-          name={props.name}
-          placeholder={String(props.placeholder)}
-          type="number"
-          onChange={props.callback} />
-        <InputGroup.Addon>{props.unit}</InputGroup.Addon>
-      </InputGroup>
+      <OverlayTrigger placement="right" overlay={tooltip}>
+        <InputGroup>
+          <FormControl
+            bsSize="small"
+            name={props.name}
+            placeholder={String(props.placeholder)}
+            type="number"
+            onChange={props.callback} />
+          <InputGroup.Addon>{props.unit}</InputGroup.Addon>
+        </InputGroup>
+      </OverlayTrigger>
     </FormGroup>
-  );
-}
-
-const ResultFormatter = (props) => {
-  return (
-    <tr key={props.key}>
-      <td>{props.label}</td>
-      <td>{props.value}</td>
-      <td>{props.unit}</td>
-    </tr>
   );
 }
 
@@ -148,6 +161,13 @@ const DesingInput = (props) => {
     <div>
       <h2>Design</h2>
       <InputFormatter
+        name="number_of_designs"
+        label="Number of designs"
+        placeholder={d.number_of_designs}
+        unit="n"
+        callback={callback}
+        tooltip="Amazing tooltip"
+      />      <InputFormatter
         name="finished_lenght_m"
         label="Finished lenght"
         placeholder={d.finished_lenght_m}
@@ -189,13 +209,7 @@ const DesingInput = (props) => {
         unit="%"
         callback={callback}
       />
-      <InputFormatter
-        name="number_of_designs"
-        label="Number of designs"
-        placeholder={d.number_of_designs}
-        unit="n"
-        callback={callback}
-      />
+
     </div>
   );
 }
@@ -208,17 +222,17 @@ const WeawingInput = (props) => {
     <div>
       <h2>Weaving</h2>
       <InputFormatter
-        name="test_piece_lenght_m"
-        label="Test piece lenght"
-        placeholder={d.test_piece_lenght_m}
-        unit="m"
-        callback={callback}
-      />
-      <InputFormatter
         name="number_of_test_pieces"
         label="Number of test pieces"
         placeholder={d.number_of_test_pieces}
         unit="n"
+        callback={callback}
+      />
+      <InputFormatter
+        name="test_piece_lenght_m"
+        label="Test piece lenght"
+        placeholder={d.test_piece_lenght_m}
+        unit="m"
         callback={callback}
       />
       <InputFormatter
@@ -292,7 +306,7 @@ const YarnInput = (props) => {
         name="picks_per_cm"
         label="Weft thickness"
         placeholder={d.picks_per_cm}
-        unit="pics/cm"
+        unit="pics / cm"
         callback={callback}
       />
     </div >
