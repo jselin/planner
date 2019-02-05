@@ -8,3 +8,11 @@
 .Results-Table {
   text-align: left;
 }
+
+.panel-title {
+  font-weight: bold;
+}
+
+.panel-body {
+  font-weight: bold;
+}

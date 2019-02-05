@@ -14,11 +14,11 @@ class Demand extends Component {
     super(props);
     this.state = {
       // Design
-      finished_lenght_m: 1,
+      finished_lenght_m: 0,
       headings_hems_lenght_m: 0,
       lenght_shrinkage_p: 0,
       fringe_lenght_m: 0,
-      finished_width_cm: 100,
+      finished_width_cm: 0,
       width_shrinkage_p: 0,
       number_of_designs: 1,
 
@@ -32,15 +32,15 @@ class Demand extends Component {
       selvedge_warps: 0,
 
       // Yarns
-      warp_yarn_tex: 24,
-      weft_yarn_tex: 24,
-      picks_per_cm: 20,
-      ends_per_cm: 20,
+      warp_yarn_tex: 0,
+      weft_yarn_tex: 0,
+      picks_per_cm: 0,
+      ends_per_cm: 0,
     }
     this.getInitialState();
   }  
   
-  
+
   
   getUUID() {
     var uuid = localStorage.getItem('Texdesigners-uuid');
@@ -153,8 +153,8 @@ const Result = (props) => {
     <div>
       <Panel>
         <Panel.Heading>
-          <Panel.Title>
-            Result
+          <Panel.Title componentClass="panel-title">
+            Demand
           </Panel.Title>
         </Panel.Heading>
         <Panel.Body>
@@ -202,7 +202,7 @@ const DesingInput = (props) => {
         callback={callback}
       />
       <InputFormatter
-        name="fring_lenght_m"
+        name="fringe_lenght_m"
         label="Fringe lenght"
         placeholder={d.fringe_lenght_m}
         unit="m"

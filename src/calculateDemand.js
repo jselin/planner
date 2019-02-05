@@ -51,7 +51,7 @@ export default function calculateDemand(d) {
   let warp_width_cm = d.finished_width_cm + width_shrinkage_cm +
     width_draw_in_cm
 
-  let number_of_ends = warp_width_cm * d.ends_per_cm;
+  let number_of_ends = warp_width_cm * d.ends_per_cm + d.selvedge_warps;
 
   let number_of_pics = warp_lenght_m * (d.picks_per_cm * 100);
 
