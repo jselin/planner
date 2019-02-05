@@ -38,7 +38,7 @@ class Demand extends Component {
       ends_per_cm: 20,
     }
     this.getInitialState();
-  }
+  }  
   
   
   getUUID() {
