@@ -38,10 +38,10 @@ class Demand extends Component {
       ends_per_cm: 0,
     }
     this.getInitialState();
-  }  
-  
+  }
 
-  
+
+
   getUUID() {
     var uuid = localStorage.getItem('Texdesigners-uuid');
     if (uuid === null) {
@@ -55,7 +55,7 @@ class Demand extends Component {
     const uuid = this.getUUID();
     const db = firebase.firestore();
     const docRef = db.collection("plans").doc(uuid);
-    docRef.get().then( (doc) => {
+    docRef.get().then((doc) => {
       if (doc.exists) {
         this.setState(doc.data());
       }
@@ -122,17 +122,11 @@ class Demand extends Component {
   }
 }
 
-const tooltip = (
-  <Tooltip id="tooltip">
-    Holy moly!
-  </Tooltip>
-)
-
 const InputFormatter = (props) => {
   return (
     <FormGroup controlId={props.name}>
       <ControlLabel>{props.label}</ControlLabel>
-      <OverlayTrigger placement="right" overlay={tooltip}>
+      <OverlayTrigger placement="top" overlay={<Tooltip id={props.name + "tooltip"}>{props.tooltip}</Tooltip>}>
         <InputGroup>
           <FormControl
             bsSize="small"
@@ -176,13 +170,15 @@ const DesingInput = (props) => {
       <InputFormatter
         name="number_of_designs"
         label="Number of designs"
+        tooltip="Number of designs to be woven"
         placeholder={d.number_of_designs}
         unit="n"
         callback={callback}
-        tooltip="Amazing tooltip"
-      />      <InputFormatter
+      />
+      <InputFormatter
         name="finished_lenght_m"
         label="Finished lenght"
+        tooltip="Lenght of finished fabric for one design"
         placeholder={d.finished_lenght_m}
         unit="m"
         callback={callback}
@@ -190,6 +186,7 @@ const DesingInput = (props) => {
       <InputFormatter
         name="headings_hems_lenght_m"
         label="Headings and hems lenght"
+        tooltip="Lenght of headings and hems for one design"
         placeholder={d.headings_hems_lenght_m}
         unit="m"
         callback={callback}
@@ -197,6 +194,7 @@ const DesingInput = (props) => {
       <InputFormatter
         name="lenght_shrinkage_p"
         label="Lenght shrinkage"
+        tooltip="Expected shrinkage in lenght of the woven fabric for one design"
         placeholder={d.lenght_shrinkage_p}
         unit="%"
         callback={callback}
@@ -204,6 +202,7 @@ const DesingInput = (props) => {
       <InputFormatter
         name="fringe_lenght_m"
         label="Fringe lenght"
+        tooltip="Lenght of fringes for one design"
         placeholder={d.fringe_lenght_m}
         unit="m"
         callback={callback}
@@ -211,6 +210,7 @@ const DesingInput = (props) => {
       <InputFormatter
         name="finished_width_cm"
         label="Finished width"
+        tooltip="Width of finished fabric for one design"
         placeholder={d.finished_width_cm}
         unit="cm"
         callback={callback}
@@ -218,6 +218,7 @@ const DesingInput = (props) => {
       <InputFormatter
         name="width_shrinkage_p"
         label="Width shrinkage"
+        tooltip="xpected shinkage in width of the woven fabric for one design"
         placeholder={d.width_shrinkage_p}
         unit="%"
         callback={callback}
@@ -237,6 +238,7 @@ const WeawingInput = (props) => {
       <InputFormatter
         name="number_of_test_pieces"
         label="Number of test pieces"
+        tooltip="Number of samples to be woven"
         placeholder={d.number_of_test_pieces}
         unit="n"
         callback={callback}
@@ -244,6 +246,7 @@ const WeawingInput = (props) => {
       <InputFormatter
         name="test_piece_lenght_m"
         label="Test piece lenght"
+        tooltip="Lenght reserved for weaving a sample"
         placeholder={d.test_piece_lenght_m}
         unit="m"
         callback={callback}
@@ -251,6 +254,7 @@ const WeawingInput = (props) => {
       <InputFormatter
         name="loom_waste_lenght_m"
         label="Loom waste lenght"
+        tooltip="Lenght needed for tying the warp on the loom, and lenght needed at the end. Add about 0.7m for table loom or 0.9m for a floor loom. Minimum warp length reserved for tying the warp is 0.15m and at the end 0.35m when amount of shafts is 2-4. For every additional shaft 0.05m must be added."
         placeholder={d.loom_waste_lenght_m}
         unit="m"
         callback={callback}
@@ -258,6 +262,7 @@ const WeawingInput = (props) => {
       <InputFormatter
         name="cutting_margin_m"
         label="Cutting margin"
+        tooltip="Lenght between the designs or samples reserved for cutting them separate"
         placeholder={d.cutting_margin_m}
         unit="m"
         callback={callback}
@@ -265,6 +270,7 @@ const WeawingInput = (props) => {
       <InputFormatter
         name="lenght_take_up_p"
         label="Lenght take up"
+        tooltip="Expected take-up due to interlacement"
         placeholder={d.lenght_take_up_p}
         unit="%"
         callback={callback}
@@ -272,6 +278,7 @@ const WeawingInput = (props) => {
       <InputFormatter
         name="width_draw_in_p"
         label="Width draw-in "
+        tooltip="Expected width draw-in due to interlacement"
         placeholder={d.width_draw_in_p}
         unit="%"
         callback={callback}
@@ -279,6 +286,7 @@ const WeawingInput = (props) => {
       <InputFormatter
         name="selvedge_warps"
         label="Selvedge warps"
+        tooltip="Total number of additional warp ends for the selvedges"
         placeholder={d.selvedge_warps}
         unit="n"
         callback={callback}
@@ -297,6 +305,7 @@ const YarnInput = (props) => {
       <InputFormatter
         name="warp_yarn_tex"
         label="Warp weight"
+        tooltip="Yarn used for warp"
         placeholder={d.warp_yarn_tex}
         unit="TEX"
         callback={callback}
@@ -304,6 +313,7 @@ const YarnInput = (props) => {
       <InputFormatter
         name="ends_per_cm"
         label="Warp thickness"
+        tooltip="Number of warp yarns per cm"
         placeholder={d.ends_per_cm}
         unit="ends / cm"
         callback={callback}
@@ -311,6 +321,7 @@ const YarnInput = (props) => {
       <InputFormatter
         name="weft_yarn_tex"
         label="Weft weight"
+        tooltip="Yarn used for weft"
         placeholder={d.weft_yarn_tex}
         unit="TEX"
         callback={callback}
@@ -318,6 +329,7 @@ const YarnInput = (props) => {
       <InputFormatter
         name="picks_per_cm"
         label="Weft thickness"
+        tooltip="Number of weft yarn layers per cm"
         placeholder={d.picks_per_cm}
         unit="pics / cm"
         callback={callback}

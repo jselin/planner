@@ -22,7 +22,7 @@ const plan1 = {
 }
 
 const result1 = {
-  number_of_ends: 11025,
+  number_of_ends: 11027,
   number_of_pics: 17378,
   warp_demand_g: 20,
   warp_lenght_m: 1.74,
