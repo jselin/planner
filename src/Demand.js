@@ -63,7 +63,7 @@ class Demand extends Component {
   }
 
   get_target_value = (e) => {
-    if (e.target.name === "warp_yarn_tex" || e.target_name === "weft_yarn_tex") {
+    if (e.target.name === "warp_yarn_tex" || e.target.name === "weft_yarn_tex") {
       return (e.target.value);
     } else {
       return (parseFloat(e.target.value));
