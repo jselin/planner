@@ -1,3 +1,4 @@
+import { numberingToFloat } from './yarn-number';
 
 /*
 Length shrinkage (m) = (Length + Headings/Hems) / 100 x Length shrinkage (%)										
@@ -55,11 +56,14 @@ export default function calculateDemand(d) {
 
   let number_of_pics = warp_lenght_m * (d.picks_per_cm * 100);
 
+  let warp_yarn_tex = numberingToFloat(d.warp_yarn_tex.toString()); 
+  let weft_yarn_tex = numberingToFloat(d.weft_yarn_tex.toString());
+  
   let warp_demand_g = d.ends_per_cm * warp_width_cm *
-    warp_lenght_m * (d.warp_yarn_tex / 1000);
+    warp_lenght_m * (warp_yarn_tex / 1000);
 
   let weft_demand_g = d.picks_per_cm * warp_width_cm *
-    fabric_lenght_m * (d.weft_yarn_tex / 1000);
+    fabric_lenght_m * (weft_yarn_tex / 1000);
 
   return {
     warp_lenght_m: toTwoDecimals(warp_lenght_m),

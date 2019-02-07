@@ -1,4 +1,4 @@
-import {multiply, numberingToFloat, parseYarnToFloat, parse} from './yarn-number.js';
+import {multiply, numberingToFloat} from './yarn-number.js';
 
 it('multiply', () => {
     expect(multiply([1])).toEqual(1);
@@ -12,7 +12,7 @@ it('number to float', () => {
     expect(numberingToFloat('1')).toEqual(1);
     expect(numberingToFloat('1,2')).toEqual(1.2);
     expect(numberingToFloat('1x2')).toEqual(2);
-    expect(numberingToFloat('1X2')).toEqual(2);
+    expect(numberingToFloat('1*2')).toEqual(2);
     expect(numberingToFloat('1 x 2')).toEqual(2);
     expect(numberingToFloat('1x2x3')).toEqual(6);
     expect(numberingToFloat('1x2x3')).toEqual(6);
