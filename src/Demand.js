@@ -155,13 +155,13 @@ const Result = (props) => {
     <div>
       <Panel>
         <Panel.Heading>
-          <Panel.Title componentClass="panel-title">
+          <Panel.Title>
             Demand
           </Panel.Title>
         </Panel.Heading>
         <Panel.Body>
-          Warp lenght {r.warp_lenght_m}m, warp demand {r.warp_demand_g}g with {r.number_of_ends} ends <br></br>
-          Weft width {r.warp_width_cm}cm, weft demand {r.weft_demand_g}g with {r.number_of_pics} pics
+          Warp lenght {r.warp_lenght_m}m, warp demand {r.warp_demand_g}g, {r.number_of_ends} ends <br></br>
+          Weft width {r.warp_width_cm}cm, weft demand {r.weft_demand_g}g, {r.number_of_pics} pics
       </Panel.Body>
       </Panel>
     </div>
