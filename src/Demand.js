@@ -218,7 +218,7 @@ const DesingInput = (props) => {
       <InputFormatter
         name="width_shrinkage_p"
         label="Width shrinkage"
-        tooltip="xpected shinkage in width of the woven fabric for one design"
+        tooltip="Expected shrinkage in width of the woven fabric for one design"
         placeholder={d.width_shrinkage_p}
         unit="%"
         callback={callback}
