@@ -106,9 +106,48 @@ const result3 = {
   weft_demand_g: 48,
 }
 
+const plan4 = {
+  // Design
+  finished_lenght_m: 1,
+  headings_hems_lenght_m: 0,
+  lenght_shrinkage_p: 0,
+  fringe_lenght_m: 0,
+  finished_width_cm: 100,
+  width_shrinkage_p: 0,
+  number_of_designs: 1,
+
+  // Weaving
+  test_piece_lenght_m: 0,
+  number_of_test_pieces: 0,
+  loom_waste_lenght_m: 0,
+  cutting_margin_m: 0,
+  lenght_take_up_p: 0,
+  width_draw_in_p: 0,
+  selvedge_warps: 0,
+  
+  // Yarns
+  warp_yarn_tex: "12*2",
+  weft_yarn_tex: "12*2",
+  picks_per_cm: 20,
+  ends_per_cm: 20,
+}
+
+const result4 = {
+  // On loom
+  warp_lenght_m: 1,
+  number_of_ends: 2000,
+  warp_width_cm: 100,
+  number_of_pics: 2000,
+ 
+  // Demand
+  warp_demand_g: 48,
+  weft_demand_g: 48,
+}
+
 
 it('calculateDemand', () => {
   expect(calculateDemand(plan1)).toEqual(result1);
   expect(calculateDemand(plan2)).toEqual(result2);
   expect(calculateDemand(plan3)).toEqual(result3);
+  expect(calculateDemand(plan4)).toEqual(result3);
 })

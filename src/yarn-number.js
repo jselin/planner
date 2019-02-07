@@ -1,5 +1,5 @@
 
-// NUMBER_VALIDATOR = '(\d+[,.]?\d*){1}[ ]*(?:([xX*/]{1})[ ]*(\d+))?'
+
 export function parse(str) {
     return str.replace(',', '.').split(/[xX*/]/).map(v => parseFloat(v));
 }

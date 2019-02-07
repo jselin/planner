@@ -62,17 +62,25 @@ class Demand extends Component {
     });
   }
 
+  get_target_value = (e) => {
+    if (e.target.name === "warp_yarn_tex" || e.target_name === "weft_yarn_tex") {
+      return (e.target.value);
+    } else {
+      return (parseFloat(e.target.value));
+    }
+  }
+
   post = (state, e) => {
     const uuid = this.getUUID();
     const db = firebase.firestore();
-    const newState = Object.assign(state, { [e.target.name]: parseFloat(e.target.value) });
+    const newState = Object.assign(state, { [e.target.name]: this.get_target_value(e) });
     db.collection("plans").doc(uuid).set(newState);
   }
 
   handleChange = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    this.setState({ [e.target.name]: parseFloat(e.target.value) });
+    this.setState({ [e.target.name]: this.get_target_value(e) });
     this.post(this.state, e);
   }
 
@@ -132,7 +140,7 @@ const InputFormatter = (props) => {
             bsSize="small"
             name={props.name}
             placeholder={String(props.placeholder)}
-            type="number"
+            type={props.type ? props.type : "number"}
             onChange={props.callback} />
           <InputGroup.Addon>{props.unit}</InputGroup.Addon>
         </InputGroup>
@@ -307,6 +315,7 @@ const YarnInput = (props) => {
         label="Warp weight"
         tooltip="Yarn used for warp"
         placeholder={d.warp_yarn_tex}
+        type="string"
         unit="TEX"
         callback={callback}
       />
@@ -321,6 +330,7 @@ const YarnInput = (props) => {
       <InputFormatter
         name="weft_yarn_tex"
         label="Weft weight"
+        type="string"
         tooltip="Yarn used for weft"
         placeholder={d.weft_yarn_tex}
         unit="TEX"
