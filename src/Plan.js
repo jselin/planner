@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './Demand.css';
+import './Plan.css';
 import calculateDemand from './calculateDemand';
 import firebase from "./firebase.js";
 
@@ -9,7 +9,7 @@ import Header from './Header.js';
 const uuidv4 = require('uuid/v4');
 const localStorage = window.localStorage;
 
-class Demand extends Component {
+class Plan extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -346,4 +346,4 @@ const YarnInput = (props) => {
   );
 }
 
-export default Demand;
+export default Plan;

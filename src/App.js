@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route } from "react-router-dom";
-import { Image, Grid, Col, Panel, PageHeader, Navbar, Nav, NavItem } from 'react-bootstrap';
+import { Navbar, Nav, NavItem } from 'react-bootstrap';
 import { IndexLinkContainer } from "react-router-bootstrap";
 
 import './App.css';
 
-import Weight from './Weight.js';
-import Header from './Header.js';
+import Home from './Home.js';
 import Demand from './Demand.js';
+import Weight from './Weight.js';
+import Plan from './Plan.js';
 
 
 class App extends Component {
@@ -42,13 +43,16 @@ class App extends Component {
                   <IndexLinkContainer to="/demand">
                     <NavItem>Demand</NavItem>
                   </IndexLinkContainer>
+                  <IndexLinkContainer to="/plan">
+                    <NavItem>Plan</NavItem>
+                  </IndexLinkContainer>
                 </Nav>
               </Navbar.Collapse>
             </Navbar>
             <Route exact path="/" component={Home} />
-            <Route path="/about" component={About} />
             <Route path="/demand" component={Demand} />
             <Route path="/weight" component={Weight} />
+            <Route path="/plan" component={Plan} />
           </div>
         </Router>
         <p className="Bottom-legend">
@@ -58,49 +62,5 @@ class App extends Component {
     );
   }
 }
-
-function Home(props) {
-  return (
-    <div>
-      <Header header="Texdesigners" />
-      <div className="home-container">
-        <PageHeader>
-          All about weaving!
-        </PageHeader>
-        <Panel>
-          <Panel.Body>
-            Welcome to your one stop shop to plan your weaving project.
-            Let use guide you through selecting your yarns, calculating demand
-            and creating a simple to follow plan. Down the line you will be able
-            design your project here too. Stay tuned.
-          </Panel.Body>
-        </Panel>
-        <Grid fluid>
-          <Col md={4}>
-            <Image rounded className="mx-auto d-block" src="/img/hector-j-rivas-1146142-unsplash.jpg" />
-            <div class="centered">Weight</div>
-          </Col>
-          <Col md={4}>
-            <Image rounded src="/img/soraya-garcia-1208513-unsplash.jpg"/>
-            <div class="centered">Demand</div>
-          </Col>
-          <Col md={4}>
-            <Image rounded src="/img/reija-huusko.jpg"/>
-            <div class="centered">Plan</div>
-          </Col>
-        </Grid>
-      </div>
-    </div >
-  );
-}
-function About(props) {
-  return (
-    <div>
-      <h2>About</h2>
-    </div>
-
-  );
-}
-
 
 export default App;
