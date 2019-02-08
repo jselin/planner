@@ -2,6 +2,10 @@
   padding: 15px;
 }
 
+.image-container {
+  padding: 10px;
+}
+
 .img-rounded {
   height: 300px;
   width: 300px;

@@ -58,12 +58,14 @@ class Home extends Component {
 const ImageFormatter = (props) => {
   return (
     <Col md={4}>
+      <div className="image-container">
       <LinkContainer to={props.path}>
         <Image rounded className="mx-auto d-block" src={props.imageUrl} />
       </LinkContainer>
       <LinkContainer to={props.path}>
         <div className="centered">{props.label}</div>
       </LinkContainer>
+      </div>
     </Col>
 
   );
