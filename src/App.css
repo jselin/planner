@@ -5,8 +5,12 @@
   margin-bottom: 0px;
 }
 
-.Bottom-legend{
+.Bottom-legend {
   text-align: center;
   font-size: small;
   color: #bbbbbb;
+}
+
+.home-container {
+  padding: 15px;
 }

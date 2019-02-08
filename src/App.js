@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route } from "react-router-dom";
-import { Navbar, Nav, NavItem } from 'react-bootstrap';
+import { Jumbotron, Navbar, Nav, NavItem } from 'react-bootstrap';
 import { IndexLinkContainer } from "react-router-bootstrap";
 
 import './App.css';
@@ -58,14 +58,20 @@ class App extends Component {
     );
   }
 }
+
 function Home(props) {
   return (
-    <div>
-      <Header header="Home" />
-      <p>
-        This is the greatest site on earth.
+    <div className="home-container">
+      <Jumbotron>
+        <h1>All about weaving!</h1>
+        <p>
+          Welcome to your one stop shop to plan your weaving project.
+          Let use guide you through selecting your yarns, calculating demand
+          and creating a simple to follow plan. Down the line you will be able
+          desing your project heree too. Stay tuned.
       </p>
-    </div >
+      </Jumbotron>
+    </div>
   );
 }
 function About(props) {
