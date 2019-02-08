@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route } from "react-router-dom";
-import { Jumbotron, Navbar, Nav, NavItem } from 'react-bootstrap';
+import { Image, Grid, Col, Panel, PageHeader, Navbar, Nav, NavItem } from 'react-bootstrap';
 import { IndexLinkContainer } from "react-router-bootstrap";
 
 import './App.css';
@@ -36,11 +36,11 @@ class App extends Component {
                   <IndexLinkContainer to="/">
                     <NavItem>Home</NavItem>
                   </IndexLinkContainer>
-                  <IndexLinkContainer to="/demand">
-                    <NavItem>Demand</NavItem>
-                  </IndexLinkContainer>
                   <IndexLinkContainer to="/weight">
                     <NavItem>Weights</NavItem>
+                  </IndexLinkContainer>
+                  <IndexLinkContainer to="/demand">
+                    <NavItem>Demand</NavItem>
                   </IndexLinkContainer>
                 </Nav>
               </Navbar.Collapse>
@@ -61,17 +61,36 @@ class App extends Component {
 
 function Home(props) {
   return (
-    <div className="home-container">
-      <Jumbotron>
-        <h1>All about weaving!</h1>
-        <p>
-          Welcome to your one stop shop to plan your weaving project.
-          Let use guide you through selecting your yarns, calculating demand
-          and creating a simple to follow plan. Down the line you will be able
-          desing your project heree too. Stay tuned.
-      </p>
-      </Jumbotron>
-    </div>
+    <div>
+      <Header header="Texdesigners" />
+      <div className="home-container">
+        <PageHeader>
+          All about weaving!
+        </PageHeader>
+        <Panel>
+          <Panel.Body>
+            Welcome to your one stop shop to plan your weaving project.
+            Let use guide you through selecting your yarns, calculating demand
+            and creating a simple to follow plan. Down the line you will be able
+            design your project here too. Stay tuned.
+          </Panel.Body>
+        </Panel>
+        <Grid fluid>
+          <Col md={4}>
+            <Image rounded className="mx-auto d-block" src="/img/hector-j-rivas-1146142-unsplash.jpg" />
+            <div class="centered">Weight</div>
+          </Col>
+          <Col md={4}>
+            <Image rounded src="/img/soraya-garcia-1208513-unsplash.jpg"/>
+            <div class="centered">Demand</div>
+          </Col>
+          <Col md={4}>
+            <Image rounded src="/img/reija-huusko.jpg"/>
+            <div class="centered">Plan</div>
+          </Col>
+        </Grid>
+      </div>
+    </div >
   );
 }
 function About(props) {

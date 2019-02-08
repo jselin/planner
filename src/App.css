@@ -1,4 +1,5 @@
 .App {
+  font-family: "Helvetica-Neue",  Arial, Helvetica, sans-serif
 }
 
 .navbar {
@@ -13,4 +14,23 @@
 
 .home-container {
   padding: 15px;
+}
+
+.img-rounded {
+  height: 300px;
+  width: 300px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.centered {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 60px;
+  font-weight: bolder;
+  color: white;
+  text-shadow: 4px 3px black;
 }
