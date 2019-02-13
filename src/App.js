@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route } from "react-router-dom";
-import { Navbar, Nav, NavItem } from 'react-bootstrap';
+import { Modal, Button, Navbar, Nav, NavItem } from 'react-bootstrap';
 import { IndexLinkContainer } from "react-router-bootstrap";
 import { StyledFirebaseAuth } from 'react-firebaseui';
 
@@ -17,6 +17,33 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      isSignedIn: false,
+      showLogin: false,
+    }
+  }
+  // Listen to the Firebase Auth state and set the local state.
+  componentDidMount() {
+    this.unregisterAuthObserver = firebase.auth().onAuthStateChanged(
+      (user) => this.setState({
+        isSignedIn: !!user,
+        showLogin: false,
+      })
+    );
+  }
+  // Make sure we un-register Firebase observers when the component unmounts.
+  componentWillUnmount() {
+    this.unregisterAuthObserver();
+  }
+
+  handleCloseLogin = () => {
+    this.setState({ showLogin: false });
+  }
+
+  handleSignIn = () => {
+    if (this.state.isSignedIn == true) {
+      firebase.auth().signOut();
+    } else {
+      this.setState({ showLogin: true });
     }
   }
 
@@ -48,9 +75,11 @@ class App extends Component {
                   <IndexLinkContainer to="/plan">
                     <NavItem>Plan</NavItem>
                   </IndexLinkContainer>
-                  <IndexLinkContainer to="/signin">
-                    <NavItem>Signin</NavItem>
-                  </IndexLinkContainer>
+                </Nav>
+                <Nav pullRight>
+                  <NavItem onClick={this.handleSignIn}>
+                    {this.state.isSignedIn ? "Sign out" : "Sign in"}
+                  </NavItem>
                 </Nav>
               </Navbar.Collapse>
             </Navbar>
@@ -58,39 +87,55 @@ class App extends Component {
             <Route path="/demand" component={Demand} />
             <Route path="/weight" component={Weight} />
             <Route path="/plan" component={Plan} />
-            <Route path="/signin" component={SignInScreen} />
           </div>
         </Router>
         <p className="Bottom-legend">
           Copyright Jari Selin <a href="mailto:yarnweightcalculator@selinf.fi">Send feedback</a>
         </p>
+        <LoginModal
+          showLogin={this.state.showLogin}
+          handleClose={this.handleCloseLogin}
+        />
       </div>
     );
   }
 }
 
+const LoginModal = (props) => {
+  return (
+    <div>
+      <Modal show={props.showLogin} onHide={props.handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Sign in</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()} />
+        </Modal.Body>
+        <Modal.Footer>
+          <Button onClick={props.handleClose}>Close</Button>
+        </Modal.Footer>
+      </Modal>
+    </div>
+  );
+}
+
 const uiConfig = {
   // Popup signin flow rather than redirect flow.
   signInFlow: 'popup',
+
   // Redirect to /signedIn after sign in is successful. Alternatively you can provide a callbacks.signInSuccess function.
-  signInSuccessUrl: '/signedIn',
+  //signInSuccessUrl: '/signedIn',
+
+  callbacks: {
+    // Avoid redirects after sign-in.
+    signInSuccessWithAuthResult: () => false
+  },
+
   // We will display Google and Facebook as auth providers.
   signInOptions: [
     firebase.auth.GoogleAuthProvider.PROVIDER_ID,
     firebase.auth.FacebookAuthProvider.PROVIDER_ID
   ]
 };
-
-class SignInScreen extends Component {
-  render() {
-    return (
-      <div>
-        <h1>My App</h1>
-        <p>Please sign-in:</p>
-        <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()}/>
-      </div>
-    );
-  }
-}
 
 export default App;
