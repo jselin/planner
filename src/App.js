@@ -66,8 +66,8 @@ class App extends Component {
                   <IndexLinkContainer to="/">
                     <NavItem>Home</NavItem>
                   </IndexLinkContainer>
-                  <IndexLinkContainer to="/weight">
-                    <NavItem>Weights</NavItem>
+                  <IndexLinkContainer to="/convert">
+                    <NavItem>Convert</NavItem>
                   </IndexLinkContainer>
                   <IndexLinkContainer to="/demand">
                     <NavItem>Demand</NavItem>
@@ -85,7 +85,7 @@ class App extends Component {
             </Navbar>
             <Route exact path="/" component={Home} />
             <Route path="/demand" component={Demand} />
-            <Route path="/weight" component={Weight} />
+            <Route path="/convert" component={Weight} />
             <Route path="/plan" component={Plan} />
           </div>
         </Router>

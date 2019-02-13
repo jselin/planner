@@ -34,8 +34,8 @@ class Home extends Component {
           </Panel>
           <Grid fluid>
             <ImageFormatter
-              path="/weight"
-              label="Weight"
+              path="/convert"
+              label="Convert"
               imageUrl="/img/hector-j-rivas-1146142-unsplash.jpg"
             />
             <ImageFormatter
