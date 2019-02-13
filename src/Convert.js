@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './Weight.css';
+import './Convert.css';
 import { Table, Form, FormGroup, FormControl, ControlLabel } from 'react-bootstrap';
 import { UNIT_TYPE, units, unitsFormatter, fromUnitToBase } from './units.js';
 import { numberingToFloat } from './yarn-number'
@@ -7,7 +7,7 @@ import Header from './Header.js'
 
 
 
-class Weight extends Component {
+class Convert extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -42,8 +42,8 @@ class Weight extends Component {
 
   render() {
     return (
-      <div className="Weight">
-        <Header header={"Yarn weight calculator"}/>
+      <div className="Convert">
+        <Header header={"Yarn numbering converter"}/>
         <Form className="Input-Form" inline onSubmit={(e) => this.handleSubmit(e)}>
           <FormGroup>
             <ControlLabel>Yarn number</ControlLabel>{' '}
@@ -129,4 +129,4 @@ function Yarns(props) {
   );
 }
 
-export default Weight;
+export default Convert;

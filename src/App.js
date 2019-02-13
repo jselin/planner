@@ -10,7 +10,7 @@ import firebase from './firebase.js'
 
 import Home from './Home.js';
 import Demand from './Demand.js';
-import Weight from './Weight.js';
+import Convert from './Convert.js';
 import Plan from './Plan.js';
 
 class App extends Component {
@@ -40,7 +40,7 @@ class App extends Component {
   }
 
   handleSignIn = () => {
-    if (this.state.isSignedIn == true) {
+    if (this.state.isSignedIn === true) {
       firebase.auth().signOut();
     } else {
       this.setState({ showLogin: true });
@@ -85,7 +85,7 @@ class App extends Component {
             </Navbar>
             <Route exact path="/" component={Home} />
             <Route path="/demand" component={Demand} />
-            <Route path="/convert" component={Weight} />
+            <Route path="/convert" component={Convert} />
             <Route path="/plan" component={Plan} />
           </div>
         </Router>

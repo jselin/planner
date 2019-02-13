@@ -92,7 +92,7 @@ class Demand extends Component {
     const submit = (e) => this.handleSubmit(e);
     return (
       <div className="Demand">
-        <Header header="Demand planner" />
+        <Header header="Demand calculator" />
         <Form onSubmit={(e) => this.handleSubmit(e)}>
           <Grid fluid>
             <Col sm={4}>
