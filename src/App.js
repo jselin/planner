@@ -19,16 +19,30 @@ class App extends Component {
     this.state = {
       isSignedIn: false,
       showLogin: false,
+      uid: false,
+      displayName: "",
     }
   }
   // Listen to the Firebase Auth state and set the local state.
   componentDidMount() {
     this.unregisterAuthObserver = firebase.auth().onAuthStateChanged(
-      (user) => this.setState({
-        isSignedIn: !!user,
-        showLogin: false,
-      })
-    );
+      (user) => {
+        if (user) {
+          this.setState({
+            isSignedIn: true,
+            showLogin: false,
+            uid: user.uid,
+            displayName: user.displayName,
+          });
+        } else {
+          this.setState({
+            isSignedIn: false,
+            showLogin: false,
+            uid: false,
+            displayName: "",
+          });
+        }
+      });
   }
   // Make sure we un-register Firebase observers when the component unmounts.
   componentWillUnmount() {
@@ -84,7 +98,16 @@ class App extends Component {
               </Navbar.Collapse>
             </Navbar>
             <Route exact path="/" component={Home} />
-            <Route path="/demand" component={Demand} />
+            <Route
+              path="/demand"
+              render={(props) =>
+                <Demand
+                  {...props}
+                  isSignedIn={this.state.isSignedIn}
+                  uid={this.state.uid}
+                />
+              }
+            />
             <Route path="/convert" component={Convert} />
             <Route path="/plan" component={Plan} />
           </div>

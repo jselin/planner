@@ -3,7 +3,7 @@ import './Demand.css';
 import calculateDemand from './calculateDemand';
 import firebase from "./firebase.js";
 
-import { Tooltip, OverlayTrigger, Panel, Grid, Form, FormGroup, FormControl, Col, InputGroup, ControlLabel } from 'react-bootstrap'
+import { Button, Tooltip, OverlayTrigger, Panel, Grid, Form, FormGroup, FormControl, Col, InputGroup, ControlLabel } from 'react-bootstrap'
 import Header from './Header.js';
 
 const uuidv4 = require('uuid/v4');
@@ -36,8 +36,9 @@ class Demand extends Component {
       weft_yarn_tex: 0,
       picks_per_cm: 0,
       ends_per_cm: 0,
+
+      id: null,
     }
-    this.getInitialState();
   }
 
   getUUID() {
@@ -60,6 +61,10 @@ class Demand extends Component {
     });
   }
 
+  componentDidMount() {
+    //this.getInitialState();
+  }
+
   get_target_value = (e) => {
     if (e.target.name === "warp_yarn_tex" || e.target.name === "weft_yarn_tex") {
       return (e.target.value);
@@ -73,6 +78,28 @@ class Demand extends Component {
     const db = firebase.firestore();
     const newState = Object.assign(state, { [e.target.name]: this.get_target_value(e) });
     db.collection("plans").doc(uuid).set(newState);
+  }
+
+  save = (props, state) => {
+    const db = firebase.firestore();
+    if (state.id) {
+      console.log("Saving: " + props.uid + " " + state.id);
+      db.collection("users").doc(props.uid).collection("plans").doc(state.id).set(state);
+    } else {
+      const id = uuidv4();
+      const newState = Object.assign(state, {
+        id: id,
+      });
+      console.log("Saved: " + props.uid + " " + id);
+      db.collection("users").doc(props.uid).collection("plans").doc(id).set(newState);
+      this.setState({ id: id });
+    }
+  }
+
+  handleSave = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    this.save(this.props, this.state);
   }
 
   handleChange = (e) => {
@@ -123,10 +150,18 @@ class Demand extends Component {
             dimensions={this.state}
           />
         </div>
+        <Button
+          onClick={this.props.isSignedIn ? this.handleSave : null}
+          disabled={!this.props.isSignedIn}
+          bsStyle="success"
+        >
+          {this.props.isSignedIn ? "Save" : "Please sign in"}
+          </Button>
       </div>
     );
   }
 }
+
 
 const InputFormatter = (props) => {
   return (

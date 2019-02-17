@@ -37,6 +37,9 @@ class Plan extends Component {
       picks_per_cm: 0,
       ends_per_cm: 0,
     }
+  }
+
+  componentDidMount() {
     this.getInitialState();
   }
 
