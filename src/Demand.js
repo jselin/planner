@@ -3,7 +3,7 @@ import './Demand.css';
 import calculateDemand from './calculateDemand';
 import firebase from "./firebase.js";
 
-import { Button, Tooltip, OverlayTrigger, Panel, Grid, Form, FormGroup, FormControl, Col, InputGroup, ControlLabel } from 'react-bootstrap'
+import { ButtonToolbar, Modal, Button, Tooltip, OverlayTrigger, Panel, Grid, Form, FormGroup, FormControl, Col, InputGroup, ControlLabel } from 'react-bootstrap'
 import Header from './Header.js';
 
 const uuidv4 = require('uuid/v4');
@@ -38,6 +38,9 @@ class Demand extends Component {
       ends_per_cm: 0,
 
       id: null,
+      title: "",
+      showLoad: false,
+      index: [],
     }
   }
 
@@ -59,6 +62,12 @@ class Demand extends Component {
         this.setState(doc.data());
       }
     });
+  }
+
+  getIndex = (uid) => {
+    const db = firebase.firestore();
+    const docRef = db.collection("users").doc(uuid).collection("plans").doc("index");
+    this.setState(docRef.get());
   }
 
   componentDidMount() {
@@ -83,17 +92,22 @@ class Demand extends Component {
   save = (props, state) => {
     const db = firebase.firestore();
     if (state.id) {
-      console.log("Saving: " + props.uid + " " + state.id);
       db.collection("users").doc(props.uid).collection("plans").doc(state.id).set(state);
     } else {
       const id = uuidv4();
       const newState = Object.assign(state, {
         id: id,
       });
-      console.log("Saved: " + props.uid + " " + id);
       db.collection("users").doc(props.uid).collection("plans").doc(id).set(newState);
       this.setState({ id: id });
     }
+  }
+
+  list = (uid) => {
+    const db = firebase.firestore();
+    const plansRef = db.collection("users").doc(uid).collection("plans")
+    let plansRef.where()
+    console.log(plansRef);
   }
 
   handleSave = (e) => {
@@ -114,33 +128,51 @@ class Demand extends Component {
     e.stopPropagation();
   }
 
+  handleCloseLoad = () => {
+    this.setState({ showLoad: false });
+  }
+
+  handleLoad = () => {
+    console.log("Load")
+    if (this.props.isSignedIn === true) {
+      this.setState({ showLoad: true });
+    }
+    this.list(this.props.uid);
+  }
+
+
   render() {
     const callback = (e) => this.handleChange(e);
     const submit = (e) => this.handleSubmit(e);
     return (
       <div className="Demand">
         <Header header="Demand calculator" />
-        <Form onSubmit={(e) => this.handleSubmit(e)}>
+        <Form onSubmit={submit}>
+          <div className="Content">
+            <Title
+              name="title"
+              label="Title"
+              tooltip="Title of your desing"
+              placeholder={this.state.title}
+            />
+          </div>
           <Grid fluid>
             <Col sm={4}>
               <DesingInput
                 dimensions={this.state}
                 callback={callback}
-                submit={submit}
               />
             </Col>
             <Col sm={4}>
               <WeawingInput
                 dimensions={this.state}
                 callback={callback}
-                submit={submit}
               />
             </Col>
             <Col sm={4}>
               <YarnInput
                 dimensions={this.state}
                 callback={callback}
-                submit={submit}
               />
             </Col>
           </Grid>
@@ -150,16 +182,66 @@ class Demand extends Component {
             dimensions={this.state}
           />
         </div>
-        <Button
-          onClick={this.props.isSignedIn ? this.handleSave : null}
-          disabled={!this.props.isSignedIn}
-          bsStyle="success"
-        >
-          {this.props.isSignedIn ? "Save" : "Please sign in"}
-          </Button>
+        <div className="Content">
+          <ButtonToolbar>
+
+            <Button
+              onClick={this.props.isSignedIn ? this.handleSave : null}
+              disabled={!this.props.isSignedIn}
+              bsStyle="success"
+            >
+              {this.props.isSignedIn ? "Save" : "Please sign in"}
+            </Button>
+            <Button
+              onClick={this.handleLoad}
+              disabled={!this.props.isSignedIn}
+              bsStyle="primary"
+            >
+              {this.props.isSignedIn ? "Open" : "Please sign in"}
+            </Button>
+          </ButtonToolbar>
+        </div>
+        <LoadModal
+          showLoad={this.state.showLoad}
+          handleClose={this.handleCloseLoad}
+        />
+
       </div>
     );
   }
+}
+
+const LoadModal = (props) => {
+  return (
+    <div>
+      <Modal show={props.showLoad} onHide={props.handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Open an existing</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <p>Some body here</p>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button onClick={props.callbakc}>Open</Button>
+        </Modal.Footer>
+      </Modal>
+    </div>
+  );
+}
+
+const Title = (props) => {
+  return (
+    <FormGroup controlId={props.name}>
+      <ControlLabel>{props.label}</ControlLabel>
+      <OverlayTrigger placement="top" overlay={<Tooltip id={props.name + "tooltip"}>{props.tooltip}</Tooltip>}>
+        <FormControl
+          bsSize="large"
+          name={props.name}
+          placeholder={String(props.placeholder)}
+        />
+      </OverlayTrigger>
+    </FormGroup>
+  );
 }
 
 

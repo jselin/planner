@@ -118,7 +118,7 @@ class App extends Component {
         <LoginModal
           showLogin={this.state.showLogin}
           handleClose={this.handleCloseLogin}
-        />
+          />
       </div>
     );
   }
