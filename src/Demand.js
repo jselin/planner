@@ -53,25 +53,7 @@ class Demand extends Component {
     return uuid;
   }
 
-  getInitialState = () => {
-    const uuid = this.getUUID();
-    const db = firebase.firestore();
-    const docRef = db.collection("plans").doc(uuid);
-    docRef.get().then((doc) => {
-      if (doc.exists) {
-        this.setState(doc.data());
-      }
-    });
-  }
-
-  getIndex = (uid) => {
-    const db = firebase.firestore();
-    const docRef = db.collection("users").doc(uuid).collection("plans").doc("index");
-    this.setState(docRef.get());
-  }
-
   componentDidMount() {
-    //this.getInitialState();
   }
 
   get_target_value = (e) => {
@@ -80,13 +62,6 @@ class Demand extends Component {
     } else {
       return (parseFloat(e.target.value));
     }
-  }
-
-  post = (state, e) => {
-    const uuid = this.getUUID();
-    const db = firebase.firestore();
-    const newState = Object.assign(state, { [e.target.name]: this.get_target_value(e) });
-    db.collection("plans").doc(uuid).set(newState);
   }
 
   save = (props, state) => {
@@ -103,11 +78,17 @@ class Demand extends Component {
     }
   }
 
-  list = (uid) => {
+  load = (uid) => {
+    console.log(uid);
     const db = firebase.firestore();
     const plansRef = db.collection("users").doc(uid).collection("plans")
-    let plansRef.where()
-    console.log(plansRef);
+    plansRef.get().then((result)=> {
+      console.log("Promise");
+      console.log(result);
+      result.forEach((doc) => {
+        console.log(doc);
+      })
+    });
   }
 
   handleSave = (e) => {
@@ -137,7 +118,7 @@ class Demand extends Component {
     if (this.props.isSignedIn === true) {
       this.setState({ showLoad: true });
     }
-    this.list(this.props.uid);
+    this.load(this.props.uid);
   }
 
 
