@@ -78,16 +78,13 @@ class Demand extends Component {
     }
   }
 
-  load = (uid) => {
-    console.log(uid);
+  list = (uid) => {
     const db = firebase.firestore();
     const plansRef = db.collection("users").doc(uid).collection("plans")
-    plansRef.get().then((result)=> {
-      console.log("Promise");
-      console.log(result);
-      result.forEach((doc) => {
-        console.log(doc);
-      })
+    plansRef.get().then((querySnapshot) => {
+      querySnapshot.forEach(function (doc) {
+        console.log(doc.id, " => ", doc.data());
+      });
     });
   }
 
