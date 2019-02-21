@@ -3,7 +3,7 @@ import './Demand.css';
 import calculateDemand from './calculateDemand';
 import firebase from "./firebase.js";
 
-import { ButtonToolbar, Modal, Button, Tooltip, OverlayTrigger, Panel, Grid, Form, FormGroup, FormControl, Col, InputGroup, ControlLabel } from 'react-bootstrap'
+import { Table, ButtonToolbar, Modal, Button, Tooltip, OverlayTrigger, Panel, Grid, Form, FormGroup, FormControl, Col, InputGroup, ControlLabel } from 'react-bootstrap'
 import Header from './Header.js';
 
 const uuidv4 = require('uuid/v4');
@@ -40,7 +40,7 @@ class Demand extends Component {
       id: null,
       title: "",
       showLoad: false,
-      index: [],
+      list: [],
     }
   }
 
@@ -57,7 +57,9 @@ class Demand extends Component {
   }
 
   get_target_value = (e) => {
-    if (e.target.name === "warp_yarn_tex" || e.target.name === "weft_yarn_tex") {
+    if (e.target.name === "warp_yarn_tex" ||
+      e.target.name === "weft_yarn_tex" ||
+      e.target.name === "title") {
       return (e.target.value);
     } else {
       return (parseFloat(e.target.value));
@@ -82,9 +84,14 @@ class Demand extends Component {
     const db = firebase.firestore();
     const plansRef = db.collection("users").doc(uid).collection("plans")
     plansRef.get().then((querySnapshot) => {
+      var list = [];
       querySnapshot.forEach(function (doc) {
-        console.log(doc.id, " => ", doc.data());
+        list.push({
+          id: doc.id,
+          title: doc.data().title ? doc.data().title : "No title" ,
+        })
       });
+      this.setState({ list: list });
     });
   }
 
@@ -98,7 +105,7 @@ class Demand extends Component {
     e.preventDefault();
     e.stopPropagation();
     this.setState({ [e.target.name]: this.get_target_value(e) });
-    this.post(this.state, e);
+    //this.post(this.state, e);
   }
 
   handleSubmit = (e) => {
@@ -115,7 +122,7 @@ class Demand extends Component {
     if (this.props.isSignedIn === true) {
       this.setState({ showLoad: true });
     }
-    this.load(this.props.uid);
+    this.list(this.props.uid);
   }
 
 
@@ -132,7 +139,8 @@ class Demand extends Component {
               label="Title"
               tooltip="Title of your desing"
               placeholder={this.state.title}
-            />
+              callback={callback}
+              />
           </div>
           <Grid fluid>
             <Col sm={4}>
@@ -182,6 +190,7 @@ class Demand extends Component {
         <LoadModal
           showLoad={this.state.showLoad}
           handleClose={this.handleCloseLoad}
+          list={this.state.list}
         />
 
       </div>
@@ -197,7 +206,20 @@ const LoadModal = (props) => {
           <Modal.Title>Open an existing</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <p>Some body here</p>
+          <Table>
+            <tbody>
+              <tr>
+                <th>ID</th>
+                <th>Title</th>
+              </tr>
+              {props.list.map(row =>
+                <tr key={row.id}>
+                  <td>{row.id}</td>
+                  <td>{row.title}</td>
+                </tr>
+              )}
+            </tbody>
+          </Table>
         </Modal.Body>
         <Modal.Footer>
           <Button onClick={props.callbakc}>Open</Button>
@@ -216,6 +238,7 @@ const Title = (props) => {
           bsSize="large"
           name={props.name}
           placeholder={String(props.placeholder)}
+          onChange={props.callback}
         />
       </OverlayTrigger>
     </FormGroup>
