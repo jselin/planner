@@ -3,7 +3,7 @@ import './Plan.css';
 import calculateDemand from './calculateDemand';
 import firebase from "./firebase.js";
 
-import { Tooltip, OverlayTrigger, Panel, Grid, Form, FormGroup, FormControl, Col, InputGroup, ControlLabel } from 'react-bootstrap'
+import { Table, ButtonToolbar, Modal, Button, Tooltip, OverlayTrigger, Panel, Grid, Form, FormGroup, FormControl, Col, InputGroup, ControlLabel } from 'react-bootstrap'
 import Header from './Header.js';
 
 const uuidv4 = require('uuid/v4');
@@ -36,11 +36,12 @@ class Plan extends Component {
       weft_yarn_tex: 0,
       picks_per_cm: 0,
       ends_per_cm: 0,
-    }
-  }
 
-  componentDidMount() {
-    this.getInitialState();
+      id: null,
+      title: "",
+      showLoad: false,
+      list: [],
+    }
   }
 
   getUUID() {
@@ -52,37 +53,59 @@ class Plan extends Component {
     return uuid;
   }
 
-  getInitialState = () => {
-    const uuid = this.getUUID();
-    const db = firebase.firestore();
-    const docRef = db.collection("plans").doc(uuid);
-    docRef.get().then((doc) => {
-      if (doc.exists) {
-        this.setState(doc.data());
-      }
-    });
+  componentDidMount() {
   }
 
   get_target_value = (e) => {
-    if (e.target.name === "warp_yarn_tex" || e.target.name === "weft_yarn_tex") {
+    if (e.target.name === "warp_yarn_tex" ||
+      e.target.name === "weft_yarn_tex" ||
+      e.target.name === "title") {
       return (e.target.value);
     } else {
       return (parseFloat(e.target.value));
     }
   }
 
-  post = (state, e) => {
-    const uuid = this.getUUID();
+  save = (props, state) => {
     const db = firebase.firestore();
-    const newState = Object.assign(state, { [e.target.name]: this.get_target_value(e) });
-    db.collection("plans").doc(uuid).set(newState);
+    if (state.id) {
+      db.collection("users").doc(props.uid).collection("plans").doc(state.id).set(state);
+    } else {
+      const id = uuidv4();
+      const newState = Object.assign(state, {
+        id: id,
+      });
+      db.collection("users").doc(props.uid).collection("plans").doc(id).set(newState);
+      this.setState({ id: id });
+    }
+  }
+
+  list = (uid) => {
+    const db = firebase.firestore();
+    const plansRef = db.collection("users").doc(uid).collection("plans")
+    plansRef.get().then((querySnapshot) => {
+      var list = [];
+      querySnapshot.forEach(function (doc) {
+        list.push({
+          id: doc.id,
+          title: doc.data().title ? doc.data().title : "No title" ,
+        })
+      });
+      this.setState({ list: list });
+    });
+  }
+
+  handleSave = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    this.save(this.props, this.state);
   }
 
   handleChange = (e) => {
     e.preventDefault();
     e.stopPropagation();
     this.setState({ [e.target.name]: this.get_target_value(e) });
-    this.post(this.state, e);
+    //this.post(this.state, e);
   }
 
   handleSubmit = (e) => {
@@ -90,33 +113,52 @@ class Plan extends Component {
     e.stopPropagation();
   }
 
+  handleCloseLoad = () => {
+    this.setState({ showLoad: false });
+  }
+
+  handleLoad = () => {
+    console.log("Load")
+    if (this.props.isSignedIn === true) {
+      this.setState({ showLoad: true });
+    }
+    this.list(this.props.uid);
+  }
+
+
   render() {
     const callback = (e) => this.handleChange(e);
     const submit = (e) => this.handleSubmit(e);
     return (
       <div className="Demand">
-        <Header header="Demand planner" />
-        <Form onSubmit={(e) => this.handleSubmit(e)}>
+        <Header header="Demand calculator" />
+        <Form onSubmit={submit}>
+          <div className="Content">
+            <Title
+              name="title"
+              label="Title"
+              tooltip="Title of your desing"
+              placeholder={this.state.title}
+              callback={callback}
+              />
+          </div>
           <Grid fluid>
             <Col sm={4}>
               <DesingInput
                 dimensions={this.state}
                 callback={callback}
-                submit={submit}
               />
             </Col>
             <Col sm={4}>
               <WeawingInput
                 dimensions={this.state}
                 callback={callback}
-                submit={submit}
               />
             </Col>
             <Col sm={4}>
               <YarnInput
                 dimensions={this.state}
                 callback={callback}
-                submit={submit}
               />
             </Col>
           </Grid>
@@ -126,10 +168,83 @@ class Plan extends Component {
             dimensions={this.state}
           />
         </div>
+        <div className="Content">
+          <ButtonToolbar>
+
+            <Button
+              onClick={this.props.isSignedIn ? this.handleSave : null}
+              disabled={!this.props.isSignedIn}
+              bsStyle="success"
+            >
+              {this.props.isSignedIn ? "Save" : "Please sign in"}
+            </Button>
+            <Button
+              onClick={this.handleLoad}
+              disabled={!this.props.isSignedIn}
+              bsStyle="primary"
+            >
+              {this.props.isSignedIn ? "Open" : "Please sign in"}
+            </Button>
+          </ButtonToolbar>
+        </div>
+        <LoadModal
+          showLoad={this.state.showLoad}
+          handleClose={this.handleCloseLoad}
+          list={this.state.list}
+        />
+
       </div>
     );
   }
 }
+
+const LoadModal = (props) => {
+  return (
+    <div>
+      <Modal show={props.showLoad} onHide={props.handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Open an existing</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Table>
+            <tbody>
+              <tr>
+                <th>ID</th>
+                <th>Title</th>
+              </tr>
+              {props.list.map(row =>
+                <tr key={row.id}>
+                  <td>{row.id}</td>
+                  <td>{row.title}</td>
+                </tr>
+              )}
+            </tbody>
+          </Table>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button onClick={props.callbakc}>Open</Button>
+        </Modal.Footer>
+      </Modal>
+    </div>
+  );
+}
+
+const Title = (props) => {
+  return (
+    <FormGroup controlId={props.name}>
+      <ControlLabel>{props.label}</ControlLabel>
+      <OverlayTrigger placement="top" overlay={<Tooltip id={props.name + "tooltip"}>{props.tooltip}</Tooltip>}>
+        <FormControl
+          bsSize="large"
+          name={props.name}
+          placeholder={String(props.placeholder)}
+          onChange={props.callback}
+        />
+      </OverlayTrigger>
+    </FormGroup>
+  );
+}
+
 
 const InputFormatter = (props) => {
   return (
