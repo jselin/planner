@@ -39,7 +39,7 @@ class Demand extends Component {
 
   componentDidMount() {
     try {
-      const storedState = JSON.parse(localStorage.getItem('Texdesigners-state'));
+      const storedState = JSON.parse(localStorage.getItem('Texdesigner-demand'));
       //console.log(storedState);
       this.setState(storedState);
     }
@@ -49,7 +49,7 @@ class Demand extends Component {
   }
 
   componentDidUpdate() {
-    localStorage.setItem('Texdesigners-state', JSON.stringify(this.state));
+    localStorage.setItem('Texdesigners-demand', JSON.stringify(this.state));
   }
 
   get_target_value = (e) => {
@@ -76,7 +76,7 @@ class Demand extends Component {
     const submit = (e) => this.handleSubmit(e);
     return (
       <div className="Demand">
-        <Header header="Demand planner" />
+        <Header header="Demand calculator" />
         <Form onSubmit={(e) => this.handleSubmit(e)}>
           <Grid fluid>
             <Col sm={4}>

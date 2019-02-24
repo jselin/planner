@@ -130,8 +130,8 @@ class Plan extends Component {
     const callback = (e) => this.handleChange(e);
     const submit = (e) => this.handleSubmit(e);
     return (
-      <div className="Demand">
-        <Header header="Demand calculator" />
+      <div className="Plan">
+        <Header header="Planner" />
         <Form onSubmit={submit}>
           <div className="Content">
             <Title
