@@ -7,7 +7,6 @@ import { Table, ButtonToolbar, Modal, Button, Tooltip, OverlayTrigger, Panel, Gr
 import Header from './Header.js';
 
 const uuidv4 = require('uuid/v4');
-const localStorage = window.localStorage;
 
 class Plan extends Component {
   constructor(props) {
@@ -42,15 +41,6 @@ class Plan extends Component {
       showLoad: false,
       list: [],
     }
-  }
-
-  getUUID() {
-    var uuid = localStorage.getItem('Texdesigners-uuid');
-    if (uuid === null) {
-      uuid = uuidv4();
-      localStorage.setItem('Texdesigners-uuid', uuid);
-    }
-    return uuid;
   }
 
   componentDidMount() {
@@ -105,7 +95,6 @@ class Plan extends Component {
     e.preventDefault();
     e.stopPropagation();
     this.setState({ [e.target.name]: this.get_target_value(e) });
-    //this.post(this.state, e);
   }
 
   handleSubmit = (e) => {
@@ -124,7 +113,6 @@ class Plan extends Component {
     }
     this.list(this.props.uid);
   }
-
 
   render() {
     const callback = (e) => this.handleChange(e);

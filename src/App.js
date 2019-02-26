@@ -45,6 +45,7 @@ class App extends Component {
       });
   }
   // Make sure we un-register Firebase observers when the component unmounts.
+  // TODO causes error in tests
   componentWillUnmount() {
     this.unregisterAuthObserver();
   }
@@ -59,6 +60,10 @@ class App extends Component {
     } else {
       this.setState({ showLogin: true });
     }
+  }
+
+  handleCopyToPlan = (demand) => {
+    this.setState({Demand: demand});
   }
 
   render() {
@@ -98,27 +103,35 @@ class App extends Component {
               </Navbar.Collapse>
             </Navbar>
             <Route exact path="/" component={Home} />
+            <Route path="/convert" component={Convert} />
             <Route
               path="/demand"
               render={(props) =>
                 <Demand
+                  {...props}
+                  copyToPlan={this.handleCopyToPlan}
+                />
+              }
+            />
+            <Route
+              path="/plan"
+              render={(props) =>
+                <Plan
                   {...props}
                   isSignedIn={this.state.isSignedIn}
                   uid={this.state.uid}
                 />
               }
             />
-            <Route path="/convert" component={Convert} />
-            <Route path="/plan" component={Plan} />
           </div>
         </Router>
         <p className="Bottom-legend">
-          Copyright Jari Selin <a href="mailto:yarnweightcalculator@selinf.fi">Send feedback</a>
+          Copyright Jari Selin <a href="mailto:yarnweightcalculator@selin.fi">Send feedback</a>
         </p>
         <LoginModal
           showLogin={this.state.showLogin}
           handleClose={this.handleCloseLogin}
-          />
+        />
       </div>
     );
   }

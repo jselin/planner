@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './Demand.css';
 import calculateDemand from './calculateDemand';
 
-import { Tooltip, OverlayTrigger, Panel, Grid, Form, FormGroup, FormControl, Col, InputGroup, ControlLabel } from 'react-bootstrap'
+import { Button, Tooltip, OverlayTrigger, Panel, Grid, Form, FormGroup, FormControl, Col, InputGroup, ControlLabel } from 'react-bootstrap'
 import Header from './Header.js';
 
 const localStorage = window.localStorage;
@@ -40,7 +40,6 @@ class Demand extends Component {
   componentDidMount() {
     try {
       const storedState = JSON.parse(localStorage.getItem('Texdesigner-demand'));
-      //console.log(storedState);
       this.setState(storedState);
     }
     catch (err) {
@@ -69,6 +68,10 @@ class Demand extends Component {
   handleSubmit = (e) => {
     e.preventDefault();
     e.stopPropagation();
+  }
+
+  handleCopyToPlan = () => {
+    this.props.copyToPlan(this.state);
   }
 
   render() {
@@ -106,6 +109,11 @@ class Demand extends Component {
           <Result
             dimensions={this.state}
           />
+          <Button
+            onClick={this.handleCopyToPlan}
+            bsStyle="primary">
+            Copy to plan
+          </Button>
         </div>
       </div>
     );
@@ -144,7 +152,7 @@ const Result = (props) => {
         <Panel.Body>
           Warp lenght {r.warp_lenght_m}m, warp demand {r.warp_demand_g}g, {r.number_of_ends} ends <br></br>
           Weft width {r.warp_width_cm}cm, weft demand {r.weft_demand_g}g, {r.number_of_pics} pics
-      </Panel.Body>
+        </Panel.Body>
       </Panel>
     </div>
   );
